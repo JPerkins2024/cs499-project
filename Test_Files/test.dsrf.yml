@@ -1,0 +1,17 @@
+---
+rules: 
+- rule: compare
+  rule number: <e.g. 1b>
+  parameter1: <parname1>
+  parameter2: <parname2>
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 1%
+- rule: compare
+  rule number: <e.g. 2a>
+  parameter1: <parname1>
+  parameter2: <parname2>
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 1%
+    note: 0.1%

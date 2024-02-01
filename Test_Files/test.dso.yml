@@ -1,0 +1,1282 @@
+---
+mrp1__6:
+  definitions:
+    analysis_type: rrs
+    units: ohms/sq
+    device_type: res2t
+    cc: 100u
+    frequency: '100000.0'
+    square: '10'
+    itar: '0.2e-3'
+    scale: 1e-6
+    reverse sweep: false
+    ports: r s
+    instance: x
+    model: 
+    _no_instance_line: 
+    unit conversion: 0.1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 30
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_0"
+  device: mrp1
+  metrics: resistance
+  instance parameters:
+    w: '1'
+    l: '20'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__mrp1__6
+  stimuli:
+    ir: '0.2e-3'
+    vs: '0'
+  simulations:
+    top_tt:
+      nominal: 51.06
+    top_ff:
+      nominal: 42.84
+    top_ss:
+      nominal: 61.79
+  ic: {}
+mrp1__7:
+  definitions:
+    analysis_type: rrs
+    units: ohms/sq
+    device_type: res2t
+    cc: 100u
+    frequency: '100000.0'
+    square: '10'
+    itar: '0.2e-3'
+    scale: 1e-6
+    reverse sweep: false
+    ports: r s
+    instance: x
+    model: 
+    _no_instance_line: 
+    unit conversion: 0.1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: -55
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_1"
+  device: mrp1
+  metrics: resistance
+  instance parameters:
+    w: '1'
+    l: '20'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__mrp1__7
+  stimuli:
+    ir: '0.2e-3'
+    vs: '0'
+  simulations:
+    top_tt:
+      nominal: 47.5
+    top_ff:
+      nominal: 39.86000000000001
+    top_ss:
+      nominal: 57.49
+  ic: {}
+mrp1__8:
+  definitions:
+    analysis_type: rrs
+    units: ohms/sq
+    device_type: res2t
+    cc: 100u
+    frequency: '100000.0'
+    square: '10'
+    itar: '0.2e-3'
+    scale: 1e-6
+    reverse sweep: false
+    ports: r s
+    instance: x
+    model: 
+    _no_instance_line: 
+    unit conversion: 0.1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 155
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_2"
+  device: mrp1
+  metrics: resistance
+  instance parameters:
+    w: '1'
+    l: '20'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__mrp1__8
+  stimuli:
+    ir: '0.2e-3'
+    vs: '0'
+  simulations:
+    top_tt:
+      nominal: 57.42000000000001
+    top_ff:
+      nominal: 48.18000000000001
+    top_ss:
+      nominal: 69.5
+  ic: {}
+mrp1_3t__9:
+  definitions:
+    analysis_type: rrs
+    units: ohms/sq
+    device_type: res3t
+    cc: 100u
+    frequency: '100000.0'
+    square: '10'
+    itar: '0.2e-3'
+    scale: 1e-6
+    reverse sweep: false
+    ports: r s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    unit conversion: 0.1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 30
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_0"
+  device: mrp1_3t
+  metrics: resistance
+  instance parameters:
+    w: '1'
+    l: '20'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__mrp1_3t__9
+  stimuli:
+    ir: '0.2e-3'
+    vs: '0'
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 51.06
+    top_ff:
+      nominal: 42.84
+    top_ss:
+      nominal: 61.79
+  ic: {}
+mrp1_3t__10:
+  definitions:
+    analysis_type: rrs
+    units: ohms/sq
+    device_type: res3t
+    cc: 100u
+    frequency: '100000.0'
+    square: '10'
+    itar: '0.2e-3'
+    scale: 1e-6
+    reverse sweep: false
+    ports: r s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    unit conversion: 0.1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: -55
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_1"
+  device: mrp1_3t
+  metrics: resistance
+  instance parameters:
+    w: '1'
+    l: '20'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__mrp1_3t__10
+  stimuli:
+    ir: '0.2e-3'
+    vs: '0'
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 47.5
+    top_ff:
+      nominal: 39.86000000000001
+    top_ss:
+      nominal: 57.49
+  ic: {}
+mrp1_3t__11:
+  definitions:
+    analysis_type: rrs
+    units: ohms/sq
+    device_type: res3t
+    cc: 100u
+    frequency: '100000.0'
+    square: '10'
+    itar: '0.2e-3'
+    scale: 1e-6
+    reverse sweep: false
+    ports: r s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    unit conversion: 0.1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 155
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_2"
+  device: mrp1_3t
+  metrics: resistance
+  instance parameters:
+    w: '1'
+    l: '20'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__mrp1_3t__11
+  stimuli:
+    ir: '0.2e-3'
+    vs: '0'
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 57.42000000000001
+    top_ff:
+      nominal: 48.18000000000001
+    top_ss:
+      nominal: 69.5
+  ic: {}
+nhv__12:
+  definitions:
+    analysis_type: id
+    device_type: nmos4t
+    vdd: '5'
+    vgg: '5'
+    vbb: "-5"
+    vdlin: '0.1'
+    vdd_leak: '5.5'
+    vmin: '0'
+    vmax: '5'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.168e-11'
+    scale_w_perim: '0.336e-5'
+    itar: '0.4032e-5'
+    scale: 1e-6
+    reverse sweep: false
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: a
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 30
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_0"
+  device: nhv
+  metrics: idsat
+  instance parameters:
+    w: '1.68'
+    l: '0.5'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__nhv__12
+  stimuli:
+    vd: '5.0'
+    vg: '5.0'
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 0.002355
+    top_ff:
+      nominal: 0.002849
+    top_ss:
+      nominal: 0.001863
+  ic: {}
+nhv__13:
+  definitions:
+    analysis_type: id
+    device_type: nmos4t
+    vdd: '5'
+    vgg: '5'
+    vbb: "-5"
+    vdlin: '0.1'
+    vdd_leak: '5.5'
+    vmin: '0'
+    vmax: '5'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.168e-11'
+    scale_w_perim: '0.336e-5'
+    itar: '0.4032e-5'
+    scale: 1e-6
+    reverse sweep: false
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: a
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: -55
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_1"
+  device: nhv
+  metrics: idsat
+  instance parameters:
+    w: '1.68'
+    l: '0.5'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__nhv__13
+  stimuli:
+    vd: '5.0'
+    vg: '5.0'
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 0.002652
+    top_ff:
+      nominal: 0.003161
+    top_ss:
+      nominal: 0.002155
+  ic: {}
+nhv__14:
+  definitions:
+    analysis_type: id
+    device_type: nmos4t
+    vdd: '5'
+    vgg: '5'
+    vbb: "-5"
+    vdlin: '0.1'
+    vdd_leak: '5.5'
+    vmin: '0'
+    vmax: '5'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.168e-11'
+    scale_w_perim: '0.336e-5'
+    itar: '0.4032e-5'
+    scale: 1e-6
+    reverse sweep: false
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: a
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 155
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_2"
+  device: nhv
+  metrics: idsat
+  instance parameters:
+    w: '1.68'
+    l: '0.5'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__nhv__14
+  stimuli:
+    vd: '5.0'
+    vg: '5.0'
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 0.001916
+    top_ff:
+      nominal: 0.002362
+    top_ss:
+      nominal: 0.001466
+  ic: {}
+nhv__15:
+  definitions:
+    analysis_type: cgg
+    device_type: nmos4t
+    vdd: '5'
+    vgg: '5'
+    vbb: "-5"
+    vdlin: '0.1'
+    vdd_leak: '5.5'
+    vmin: '0'
+    vmax: '5'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.168e-11'
+    scale_w_perim: '0.336e-5'
+    itar: '0.4032e-5'
+    scale: 1e-6
+    reverse sweep: false
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: f
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 30
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_0"
+  device: nhv
+  metrics: cggi
+  instance parameters:
+    w: '1.68'
+    l: '0.5'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__nhv__15
+  stimuli:
+    vg: '5.0'
+    vd: 0
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 5.757e-15
+    top_ff:
+      nominal: 6.02e-15
+    top_ss:
+      nominal: 5.426e-15
+  ic: {}
+nhv__16:
+  definitions:
+    analysis_type: cgg
+    device_type: nmos4t
+    vdd: '5'
+    vgg: '5'
+    vbb: "-5"
+    vdlin: '0.1'
+    vdd_leak: '5.5'
+    vmin: '0'
+    vmax: '5'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.168e-11'
+    scale_w_perim: '0.336e-5'
+    itar: '0.4032e-5'
+    scale: 1e-6
+    reverse sweep: false
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: f
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: -55
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_1"
+  device: nhv
+  metrics: cggi
+  instance parameters:
+    w: '1.68'
+    l: '0.5'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__nhv__16
+  stimuli:
+    vg: '5.0'
+    vd: 0
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 5.765e-15
+    top_ff:
+      nominal: 6.03e-15
+    top_ss:
+      nominal: 5.434e-15
+  ic: {}
+nhv__17:
+  definitions:
+    analysis_type: cgg
+    device_type: nmos4t
+    vdd: '5'
+    vgg: '5'
+    vbb: "-5"
+    vdlin: '0.1'
+    vdd_leak: '5.5'
+    vmin: '0'
+    vmax: '5'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.168e-11'
+    scale_w_perim: '0.336e-5'
+    itar: '0.4032e-5'
+    scale: 1e-6
+    reverse sweep: false
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: f
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 155
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_2"
+  device: nhv
+  metrics: cggi
+  instance parameters:
+    w: '1.68'
+    l: '0.5'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__nhv__17
+  stimuli:
+    vg: '5.0'
+    vd: 0
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 5.744e-15
+    top_ff:
+      nominal: 6.007e-15
+    top_ss:
+      nominal: 5.414e-15
+  ic: {}
+nshort__18:
+  definitions:
+    analysis_type: id
+    device_type: nmos4t
+    vdd: '1.8'
+    vgg: '1.8'
+    vbb: "-1.8"
+    vdlin: '0.1'
+    vdd_leak: '1.95'
+    vmin: '0'
+    vmax: '1.8'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.504e-12'
+    scale_w_perim: '0.336e-5'
+    itar: '0.1344e-4'
+    scale: 1e-6
+    reverse sweep: false
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: a
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 30
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_0"
+  device: nshort
+  metrics: idsat
+  instance parameters:
+    w: '1.68'
+    l: '0.15'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__nshort__18
+  stimuli:
+    vd: '1.8'
+    vg: '1.8'
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 0.001566
+    top_ff:
+      nominal: 0.001954
+    top_ss:
+      nominal: 0.001181
+  ic: {}
+nshort__19:
+  definitions:
+    analysis_type: id
+    device_type: nmos4t
+    vdd: '1.8'
+    vgg: '1.8'
+    vbb: "-1.8"
+    vdlin: '0.1'
+    vdd_leak: '1.95'
+    vmin: '0'
+    vmax: '1.8'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.504e-12'
+    scale_w_perim: '0.336e-5'
+    itar: '0.1344e-4'
+    scale: 1e-6
+    reverse sweep: false
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: a
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: -55
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_1"
+  device: nshort
+  metrics: idsat
+  instance parameters:
+    w: '1.68'
+    l: '0.15'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__nshort__19
+  stimuli:
+    vd: '1.8'
+    vg: '1.8'
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 0.001781
+    top_ff:
+      nominal: 0.002215
+    top_ss:
+      nominal: 0.001398
+  ic: {}
+nshort__20:
+  definitions:
+    analysis_type: id
+    device_type: nmos4t
+    vdd: '1.8'
+    vgg: '1.8'
+    vbb: "-1.8"
+    vdlin: '0.1'
+    vdd_leak: '1.95'
+    vmin: '0'
+    vmax: '1.8'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.504e-12'
+    scale_w_perim: '0.336e-5'
+    itar: '0.1344e-4'
+    scale: 1e-6
+    reverse sweep: false
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: a
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 155
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_2"
+  device: nshort
+  metrics: idsat
+  instance parameters:
+    w: '1.68'
+    l: '0.15'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__nshort__20
+  stimuli:
+    vd: '1.8'
+    vg: '1.8'
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 0.001341
+    top_ff:
+      nominal: 0.001648
+    top_ss:
+      nominal: 0.0009772
+  ic: {}
+nshort__21:
+  definitions:
+    analysis_type: cgg
+    device_type: nmos4t
+    vdd: '1.8'
+    vgg: '1.8'
+    vbb: "-1.8"
+    vdlin: '0.1'
+    vdd_leak: '1.95'
+    vmin: '0'
+    vmax: '1.8'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.504e-12'
+    scale_w_perim: '0.336e-5'
+    itar: '0.1344e-4'
+    scale: 1e-6
+    reverse sweep: false
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: f
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 30
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_0"
+  device: nshort
+  metrics: cggi
+  instance parameters:
+    w: '1.68'
+    l: '0.15'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__nshort__21
+  stimuli:
+    vg: '1.8'
+    vd: 0
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 5.088e-15
+    top_ff:
+      nominal: 5.229e-15
+    top_ss:
+      nominal: 4.931e-15
+  ic: {}
+nshort__22:
+  definitions:
+    analysis_type: cgg
+    device_type: nmos4t
+    vdd: '1.8'
+    vgg: '1.8'
+    vbb: "-1.8"
+    vdlin: '0.1'
+    vdd_leak: '1.95'
+    vmin: '0'
+    vmax: '1.8'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.504e-12'
+    scale_w_perim: '0.336e-5'
+    itar: '0.1344e-4'
+    scale: 1e-6
+    reverse sweep: false
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: f
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: -55
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_1"
+  device: nshort
+  metrics: cggi
+  instance parameters:
+    w: '1.68'
+    l: '0.15'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__nshort__22
+  stimuli:
+    vg: '1.8'
+    vd: 0
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 5.111e-15
+    top_ff:
+      nominal: 5.251e-15
+    top_ss:
+      nominal: 4.955e-15
+  ic: {}
+nshort__23:
+  definitions:
+    analysis_type: cgg
+    device_type: nmos4t
+    vdd: '1.8'
+    vgg: '1.8'
+    vbb: "-1.8"
+    vdlin: '0.1'
+    vdd_leak: '1.95'
+    vmin: '0'
+    vmax: '1.8'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.504e-12'
+    scale_w_perim: '0.336e-5'
+    itar: '0.1344e-4'
+    scale: 1e-6
+    reverse sweep: false
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: f
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 155
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_2"
+  device: nshort
+  metrics: cggi
+  instance parameters:
+    w: '1.68'
+    l: '0.15'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__nshort__23
+  stimuli:
+    vg: '1.8'
+    vd: 0
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 5.057e-15
+    top_ff:
+      nominal: 5.199e-15
+    top_ss:
+      nominal: 4.898e-15
+  ic: {}
+pshort__24:
+  definitions:
+    analysis_type: id
+    device_type: pmos4t
+    vdd: '1.8'
+    vgg: '1.8'
+    vbb: "-1.8"
+    vdlin: '0.1'
+    vdd_leak: '1.95'
+    vmin: '0'
+    vmax: '1.8'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.504e-12'
+    scale_w_perim: '0.336e-5'
+    itar: "-0.1344e-4"
+    scale: 1e-6
+    reverse sweep: 'true'
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: a
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 30
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_0"
+  device: pshort
+  metrics: idsat
+  instance parameters:
+    w: '1.68'
+    l: '0.15'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__pshort__24
+  stimuli:
+    vd: "-1.8"
+    vg: "-1.8"
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: -0.0006833
+    top_ff:
+      nominal: -0.0009324
+    top_ss:
+      nominal: -0.0004333
+  ic: {}
+pshort__25:
+  definitions:
+    analysis_type: id
+    device_type: pmos4t
+    vdd: '1.8'
+    vgg: '1.8'
+    vbb: "-1.8"
+    vdlin: '0.1'
+    vdd_leak: '1.95'
+    vmin: '0'
+    vmax: '1.8'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.504e-12'
+    scale_w_perim: '0.336e-5'
+    itar: "-0.1344e-4"
+    scale: 1e-6
+    reverse sweep: 'true'
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: a
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: -55
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_1"
+  device: pshort
+  metrics: idsat
+  instance parameters:
+    w: '1.68'
+    l: '0.15'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__pshort__25
+  stimuli:
+    vd: "-1.8"
+    vg: "-1.8"
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: -0.0006143
+    top_ff:
+      nominal: -0.0008328
+    top_ss:
+      nominal: -0.0003925
+  ic: {}
+pshort__26:
+  definitions:
+    analysis_type: id
+    device_type: pmos4t
+    vdd: '1.8'
+    vgg: '1.8'
+    vbb: "-1.8"
+    vdlin: '0.1'
+    vdd_leak: '1.95'
+    vmin: '0'
+    vmax: '1.8'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.504e-12'
+    scale_w_perim: '0.336e-5'
+    itar: "-0.1344e-4"
+    scale: 1e-6
+    reverse sweep: 'true'
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: a
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 155
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_2"
+  device: pshort
+  metrics: idsat
+  instance parameters:
+    w: '1.68'
+    l: '0.15'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__pshort__26
+  stimuli:
+    vd: "-1.8"
+    vg: "-1.8"
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: -0.0007806
+    top_ff:
+      nominal: -0.001066
+    top_ss:
+      nominal: -0.0004975
+  ic: {}
+pshort__27:
+  definitions:
+    analysis_type: cgg
+    device_type: pmos4t
+    vdd: '1.8'
+    vgg: '1.8'
+    vbb: "-1.8"
+    vdlin: '0.1'
+    vdd_leak: '1.95'
+    vmin: '0'
+    vmax: '1.8'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.504e-12'
+    scale_w_perim: '0.336e-5'
+    itar: "-0.1344e-4"
+    scale: 1e-6
+    reverse sweep: 'true'
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: f
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 30
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_0"
+  device: pshort
+  metrics: cggi
+  instance parameters:
+    w: '1.68'
+    l: '0.15'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__pshort__27
+  stimuli:
+    vg: "-1.8"
+    vd: 0
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 4.547e-15
+    top_ff:
+      nominal: 4.451e-15
+    top_ss:
+      nominal: 4.528e-15
+  ic: {}
+pshort__28:
+  definitions:
+    analysis_type: cgg
+    device_type: pmos4t
+    vdd: '1.8'
+    vgg: '1.8'
+    vbb: "-1.8"
+    vdlin: '0.1'
+    vdd_leak: '1.95'
+    vmin: '0'
+    vmax: '1.8'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.504e-12'
+    scale_w_perim: '0.336e-5'
+    itar: "-0.1344e-4"
+    scale: 1e-6
+    reverse sweep: 'true'
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: f
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: -55
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_1"
+  device: pshort
+  metrics: cggi
+  instance parameters:
+    w: '1.68'
+    l: '0.15'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__pshort__28
+  stimuli:
+    vg: "-1.8"
+    vd: 0
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 4.562e-15
+    top_ff:
+      nominal: 4.467e-15
+    top_ss:
+      nominal: 4.542e-15
+  ic: {}
+pshort__29:
+  definitions:
+    analysis_type: cgg
+    device_type: pmos4t
+    vdd: '1.8'
+    vgg: '1.8'
+    vbb: "-1.8"
+    vdlin: '0.1'
+    vdd_leak: '1.95'
+    vmin: '0'
+    vmax: '1.8'
+    cc: 600n
+    frequency: '100000.0'
+    scale_area: '0.504e-12'
+    scale_w_perim: '0.336e-5'
+    itar: "-0.1344e-4"
+    scale: 1e-6
+    reverse sweep: 'true'
+    ports: d g s b
+    instance: x
+    model: 
+    _no_instance_line: 
+    units: f
+    unit conversion: 1
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 155
+    models path: "/home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l"
+    step size: 0.01
+    load balancer: bsub -R "(osrel==60 || osrel==70) && ui=hspice"
+    language: spice
+    rundir: "/opt/tmp_share/chamberlain/devsim/work/devsim_aucll002_3499637_2"
+  device: pshort
+  metrics: cggi
+  instance parameters:
+    w: '1.68'
+    l: '0.15'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+  measure name: h1__pshort__29
+  stimuli:
+    vg: "-1.8"
+    vd: 0
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 4.53e-15
+    top_ff:
+      nominal: 4.432e-15
+    top_ss:
+      nominal: 4.513e-15
+  ic: {}

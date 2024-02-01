@@ -1,0 +1,66 @@
+---
+nhv:
+  device: nhv
+  metrics:
+  - idsat
+  - cggi
+  instance parameters:
+    w: '1.68'
+    l: '0.5'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+nshort:
+  device: nshort
+  metrics:
+  - idsat
+  - cggi
+  instance parameters:
+    w: '1.68'
+    l: '0.15'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+pshort:
+  device: pshort
+  metrics:
+  - idsat
+  - cggi
+  instance parameters:
+    w: '1.68'
+    l: '0.15'
+    nf: '4'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+mrp1:
+  device: mrp1
+  metrics:
+  - resistance
+  instance parameters:
+    w: '1'
+    l: '20'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+mrp1_3t:
+  device: mrp1_3t
+  metrics:
+  - resistance
+  instance parameters:
+    w: '1'
+    l: '20'
+    m: '2'
+    mf: '2'
+    presim_flag: '0'
+default:
+  control:
+    corners: top_tt,top_ff,top_ss
+    simulator: hspice
+    temperature: 
+    - 30
+    - -55
+    - 155
+    models path: /home/difcm/MDL_AUC/mxs8/modelwa/chamberlain/source/models/toplevel.l
