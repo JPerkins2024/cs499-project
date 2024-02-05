@@ -1,0 +1,150 @@
+nhv__2:
+  definitions:
+    analysis_type: cgg
+    vmin: -0.5
+    vmax: 2.0
+    frequency: 100000.0
+    itar: 1.0000000000000001e-07
+    reverse sweep: false
+    scale: 1e-06
+    cc: 100n
+    device_type: nmos4t
+    lmin: 0.5
+    scale_area: w*l*m*scale*scale
+    scale_w_perim: 2*(w+l)*m*scale
+    vbb: -2.5
+    vdd: 5
+    vdlin: 0.1
+    vgg: 5
+    wmin: 0.5
+    units: f
+    unit conversion: 1.0
+  control:
+    tprint: 1n
+    tstop: 1u
+    load balancer: bsub
+    simulator: spectre
+    models path: /opt/pre-release/pub/tech5/mxs8/v0.1.0/spectre/models/toplevel.scs
+    corners: top_tt
+    step size: 0.01
+    temperature: 25
+    mode: normal
+    language: spectre
+    rundir: /opt/tmp_share/chamberlain/devsim/work/devsim_auclc001_254499_0/0
+  _fname: mxs8.dsi.yml
+  _dirname: ''
+  device: nhv
+  instance parameters:
+    l: 0.5
+    w: 0.5
+  metrics: cggi
+  measure name: h1__nhv__2
+  stimuli:
+    vg: 5.0
+    vd: 0
+    vs: 0
+    vb: 0
+  simulations:
+    top_tt:
+      nominal: 8.56678e-16
+  ic: {}
+nhv__1:
+  definitions:
+    analysis_type: vtc
+    vmin: -0.5
+    vmax: 2.0
+    frequency: 100000.0
+    itar: 1.0000000000000001e-07
+    reverse sweep: false
+    scale: 1e-06
+    cc: 100n
+    device_type: nmos4t
+    lmin: 0.5
+    scale_area: w*l*m*scale*scale
+    scale_w_perim: 2*(w+l)*m*scale
+    vbb: -2.5
+    vdd: 5
+    vdlin: 0.1
+    vgg: 5
+    wmin: 0.5
+    units: v
+    unit conversion: 1.0
+  control:
+    tprint: 1n
+    tstop: 1u
+    load balancer: bsub
+    simulator: spectre
+    models path: /opt/pre-release/pub/tech5/mxs8/v0.1.0/spectre/models/toplevel.scs
+    corners: top_tt
+    step size: 0.01
+    temperature: 25
+    mode: normal
+    language: spectre
+    rundir: /opt/tmp_share/chamberlain/devsim/work/devsim_auclc001_254499_0/0
+  _fname: mxs8.dsi.yml
+  _dirname: ''
+  device: nhv
+  instance parameters:
+    l: 0.5
+    w: 0.5
+  metrics: vtlin
+  measure name: h1__nhv__1
+  stimuli:
+    vb: 0
+    vd: 0.1
+    vg: 5.0
+    vs: 0
+  simulations:
+    top_tt:
+      nominal: 0.751871
+  ic: {}
+nhv__0:
+  definitions:
+    analysis_type: id
+    vmin: -0.5
+    vmax: 2.0
+    frequency: 100000.0
+    itar: 1.0000000000000001e-07
+    reverse sweep: false
+    scale: 1e-06
+    cc: 100n
+    device_type: nmos4t
+    lmin: 0.5
+    scale_area: w*l*m*scale*scale
+    scale_w_perim: 2*(w+l)*m*scale
+    vbb: -2.5
+    vdd: 5
+    vdlin: 0.1
+    vgg: 5
+    wmin: 0.5
+    units: a
+    unit conversion: 1.0
+  control:
+    tprint: 1n
+    tstop: 1u
+    load balancer: bsub
+    simulator: spectre
+    models path: /opt/pre-release/pub/tech5/mxs8/v0.1.0/spectre/models/toplevel.scs
+    corners: top_tt
+    step size: 0.01
+    temperature: 25
+    mode: normal
+    language: spectre
+    rundir: /opt/tmp_share/chamberlain/devsim/work/devsim_auclc001_254499_0/0
+  _fname: mxs8.dsi.yml
+  _dirname: ''
+  device: nhv
+  instance parameters:
+    l: 0.5
+    w: 0.5
+  metrics: idsat
+  measure name: h1__nhv__0
+  stimuli:
+    vb: 0
+    vd: 5.0
+    vg: 5.0
+    vs: 0
+  simulations:
+    top_tt:
+      nominal: 0.000336907
+  ic: {}

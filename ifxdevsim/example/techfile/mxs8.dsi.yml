@@ -1,0 +1,17 @@
+---
+nhv:
+  device: nhv
+  instance parameters:
+    l: lmin
+    w: wmin
+  metrics:
+  - idsat
+  - vtlin
+  - cggi
+default:
+  control:
+    simulator: spectre
+    models path: /opt/pre-release/pub/tech5/mxs8/v0.1.0/spectre/models/toplevel.scs
+    corners: top_tt
+  definitions:
+    scale: 1e-6

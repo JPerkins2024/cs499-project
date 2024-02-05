@@ -1,0 +1,8 @@
+from Share LaTeX website https://www.sharelatex.com/learn/Pgfplots_package#!#2D_plots:
+Since LaTeX was not initially conceived with plotting capabilities in mind, when there are several pgfplot figures in your document or they are very complex, it takes a considerable amount of time to render them. To improve the compiling time you can configure the package to export the figures to separate PDF files and then import them into the document, just add the code shown below to the preamble:
+
+\usepgfplotslibrary{external}
+
+\tikzexternalize
+
+By now this functionality is not implemented in ShareLaTeX, but you can try it in your local LaTeX installation.}

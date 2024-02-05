@@ -1,0 +1,183 @@
+config:
+  relxpert_nmos_hci: 
+    parser: Relxpert
+    file_glob: "@CORNER__stress.bo0"
+    devsim_file_glob: "@CORNER__stress.bo0"
+    table_name: "<NMOS HCI Degradation Table>"
+    table_start: "^elem"
+    table_entries: 
+      - instance
+      - max_isub
+      - avg_isub
+      - max_igate
+      - avg_igate
+      - lifetime
+      - degradation
+      - age
+      - agelevel
+    pass_key: 'degradation'
+    devsim_key: 'degradation'
+    pass_criteria: '0.35'
+  relxpert_pmos_hci: 
+    parser: Relxpert
+    file_glob: "@CORNER__stress.bo0"
+    devsim_file_glob: "@CORNER__stress.bo0"
+    table_name: "<PMOS HCI Degradation Table>"
+    table_start: "^elem"
+    table_entries: 
+      - instance
+      - max_isub
+      - avg_isub
+      - max_igate
+      - avg_igate
+      - lifetime
+      - degradation
+      - age
+      - agelevel
+    pass_key: 'degradation'
+      # devsim_key: What to grab from table_entries
+    devsim_key: 'degradation'  
+      # devsim_label:  What the label will be in dso.yml
+    devsim_label: 'hci_degradation'  
+    pass_criteria: '0.35'
+  relxpert_pmos_total: 
+    parser: Relxpert
+    file_glob: "@CORNER__stress.bo0"
+    devsim_file_glob: "@CORNER__stress.bo0"
+    table_name: "<PMOS HCI and NBTI Degradation Table>"
+    table_start: "^elem"
+    table_entries: 
+      - instance
+      - max_isub
+      - avg_isub
+      - max_igate
+      - avg_igate
+      - lifetime
+      - degradation
+      - age
+      - agelevel
+    pass_key: 'degradation'
+    devsim_key: 'degradation'
+    pass_criteria: '0.35'
+  relxpert_pmos_nbti: 
+    parser: Relxpert
+    file_glob: "*.bo0"
+    devsim_file_glob: "@CORNER__stress.bo0"
+    table_name: "<PMOS NBTI Degradation Table>"
+    table_start: "^elem"
+    table_entries: 
+      - instance
+      - lifetime
+      - degradation
+      - age
+      - agelevel
+    pass_key: 'degradation'
+    devsim_key: 'degradation'
+    devsim_label: 'nbti_degradation'
+    pass_criteria: '0.35'
+  omi_degradation: 
+    parser: omi
+    file_glob: "*.omideg0"
+    devsim_file_glob: "@CORNER__aged.omideg0"
+    table_start: "^Instance"
+    table_entries: 
+      - instance
+      - hci_deg
+      - nbti_deg
+      - total_degradation
+      - pass
+      - limit
+    pass_key: 'pass'
+    devsim_key: 
+      - 'total_degradation'
+      - 'hci_deg'
+      - 'nbti_deg'
+    devsim_label:
+      - 'degradation'
+      - 'hci_degradation'
+      - 'nbti_degradation'
+    pass_criteria: 'PASS'
+  tmi: 
+    parser: tmi
+    file_glob: "*.tmideg0"
+    devsim_file_glob: "@CORNER__aged.tmideg0"
+    table_start: "^Rank"
+    table_entries: 
+      - rank
+      - instance
+      - didsat(hci+bti,%)
+      - didlin(hci+bti,%)
+      - dvtlin(hci+bti,v)
+      - didsat(hci,%)
+      - didlin(hci,%)
+      - dvtlin(hci,v)
+      - didsat(bti,%)
+      - didlin(bti,%)
+      - dvtlin(bti,v)
+      - lifetime(hci+bti,yr)
+      - lifetime(hci,yr)
+      - lifetime(bti,yr)
+      - lifetime_item
+      - eol_spec
+      - model
+    pass_selector: 'lifetime_item'
+    pass_key: 'eol_spec'
+    pass_mode: 'selector'
+    devsim_key: 
+      - 'didsat(hci+bti,%)'
+      - 'didlin(hci+bti,%)'
+      - 'dvtlin(hci+bti,v)'
+      - didsat(hci,%)
+      - didlin(hci,%)
+      - dvtlin(hci,v)
+      - didsat(bti,%)
+      - didlin(bti,%)
+      - dvtlin(bti,v)
+      - lifetime(hci+bti,yr)
+      - lifetime(hci,yr)
+      - lifetime(bti,yr)
+    devsim_label: 
+      - 'degradation (idsat %)'
+      - 'degradation (idlin %)'
+      - 'degradation (vtlin V)'
+      - 'didsat(hci %)'
+      - 'didlin(hci %)'
+      - 'dvtlin(hci v)'
+      - didsat(bti %)
+      - didlin(bti %)
+      - dvtlin(bti v)
+      - 'lifetime(hci+bti yr)'
+      - 'lifetime(hci yr)'
+      - 'lifetime(bti yr)'
+  tmi_tddb: 
+    parser: tmi
+    file_glob: "*.tddb[0-9]"
+    table_start: "^Rank"
+    table_entries: 
+    - Rank
+    - Instance
+    - LT_at_Dev_area(yr)
+    - Dev_area(um^2)
+    - LT_at_Total_area(yr)
+    - Total_area(um^2)
+    - Category
+    - Model
+    pass_limit: 10
+    pass_limit_type: "lower"
+    pass_key: 'LT_at_Total_area(yr)'
+    pass_mode: 'limit'
+  spectre_asserts: 
+    parser: spectre_asserts
+    file_glob: "@CORNER.raw/@CORNER.sqldb"
+    devsim_file_glob: "@CORNER.raw/@CORNER.sqldb"
+    devsim_key: asserts
+    assert_key: "Checker Name"
+  titan_asserts: 
+    parser: spectre_asserts
+    file_glob: "@CORNER.db"
+    devsim_file_glob: "@CORNER.db"
+    devsim_key: asserts
+    assert_key: "Checker Name"
+
+flow: devsim
+
