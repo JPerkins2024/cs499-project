@@ -304,7 +304,8 @@ class Controller:
                 for message in messages:
                     error_str += message
             logger.error(error_str)
-            logger.fatal("Simulation errors found.  Exiting...")
+            # Simulation errors are never fatal to devsim.  Commenting for now until I verify that is all that is going on here.
+            #logger.fatal("Simulation errors found.  Exiting...")
 
     def create_rundir(self):
         # rundir_path = os.getcwd()

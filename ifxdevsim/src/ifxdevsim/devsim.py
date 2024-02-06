@@ -334,14 +334,14 @@ class DevSim:
 
         jobids = []
         graphonly = None
-        if not graphonly:
+        nosim = True
+        if not (graphonly or nosim):
             for job in jobs:
                 # job.create_rundir()
                 job.netlist()
                 jobids.append(job.simulate())
         jobids = list(flatten(jobids))
-        nosim = None
-        if (not nosim or graphonly) and len(jobids) > 0:
+        if (not (nosim or graphonly)) and len(jobids) > 0:
             dummy = "bsub -R '(osrel==60 || osrel==70 || osrel==80)' -K -w '{jobids}' cat /dev/null".format(
                 jobids="&&".join(map(lambda x: "ended({x})".format(x=x), jobids))
             )
