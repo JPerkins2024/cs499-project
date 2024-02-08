@@ -113,34 +113,32 @@ cnvac:
   - cgg
 mdrc:
   1:
-    type: compare
     string: 'Device comparisons'
     a:
-      compare: device
       string: 'Indentical devices'
       limit:
         fail: 1%
     b:
-      compare: device
       string: 'Similar devices'
       limit:
         fail: 5%
   2:
-    type: compare
     string: 'Simulator checks'
-    compare: control:simulator
     limit:
       note: 0.1%
       fail: 1%
     a:  
+      compare:
+        control: titan
       string: 'Titan'
     b:  
+      compare:
+        control: hspice
       string: 'Hspice'
   3:
     type: compare
     string: 'Metric comparison'
   4:
-    type: metric_check
     string: 'Verify a metric is within limits'
   5:
     type: corner_compare

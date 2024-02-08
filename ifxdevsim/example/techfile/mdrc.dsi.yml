@@ -1,0 +1,41 @@
+---
+nhv:
+  device: nhv
+  instance parameters:
+    l: lmin
+    w: wmin
+  metrics:
+  - idsat
+  - vtlin
+  - cggi
+  mdrc:
+    2a:
+      compare:
+        control:
+          simulator: titan
+      string: ['Simulator checks','Titan']
+      limit:
+        note: 0.1%
+        fail: 1%
+    2b:
+      compare:
+        control:
+          simulator: hspice
+      string: ['Simulator checks','Hspice']
+      limit:
+        note: 0.1%
+        fail: 1%
+    4:  
+      check:
+        metrics: idsat
+      string: ['Verify a metric is within limits','IDSAT']
+      limit:
+        min: 500
+        max: 1000
+default:
+  control:
+    simulator: spectre
+    models path: /opt/pre-release/pub/tech5/mxs8/v0.1.0/spectre/models/toplevel.scs
+    corners: top_tt
+  definitions:
+    scale: 1e-6
