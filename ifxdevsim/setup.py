@@ -30,7 +30,6 @@ setup(
     install_requires=[
         "numpy",
         "pandas",
-        "ifxpymdm",
         "coloredlogs",
         "flatten_json",
         "frozendict",
@@ -38,7 +37,6 @@ setup(
         "pint",
         "typing_extensions>=4.0",
         "pylatexenc",
-        "ifxpyproplusdat"
     ],
     entry_points={"console_scripts": ["dvsim = ifxdevsim:main",]},
 )
