@@ -1,6 +1,5 @@
 numpy
 pandas
-ifxpymdm
 coloredlogs
 flatten_json
 frozendict
@@ -8,4 +7,3 @@ cexprtk
 pint
 typing_extensions>=4.0
 pylatexenc
-ifxpyproplusdat

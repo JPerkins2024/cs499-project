@@ -1,0 +1,13 @@
+example_int: 12
+example_float: 3.14
+example_string: "this is a string"
+no_quote_string: this is a string with no quotes
+example_list:
+  - one
+  - two
+  - three
+example_dictionary:
+  key_1: 12
+  key_2: string
+  subdict_1:
+    subdict_key: value
