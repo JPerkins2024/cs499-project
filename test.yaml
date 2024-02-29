@@ -1,13 +1,122 @@
-example_int: 12
-example_float: 3.14
-example_string: "this is a string"
-no_quote_string: this is a string with no quotes
-example_list:
-  - one
-  - two
-  - three
-example_dictionary:
-  key_1: 12
-  key_2: string
-  subdict_1:
-    subdict_key: value
+nhv__0:
+  device: nhv
+  mdrc:
+    1A Rules are kool:
+      Compare: {}
+      limit: {}
+      string:
+      - Compare Stuff
+      - Otherstuff 1
+    1A Shrek is the lord and saviour:
+      check: {}
+      limit: {}
+      string:
+      - Check Stuff
+      - Otherstuff 2
+    1B Algorithms are fun:
+      Compare: {}
+      limit: {}
+      string:
+      - Compare Stuff
+      - Otherstuff 1
+    2B Barnie is a dinosaur:
+      check: {}
+      limit: {}
+      string:
+      - Check Stuff
+      - Otherstuff 2
+    3A Transformers was a good movie:
+      Corner_Comp: {}
+      limit: {}
+      string:
+      - Korner Stuff
+      - Otherstuff 3
+    3B Asteroids inbound:
+      Corner_Comp: {}
+      limit: {}
+      string:
+      - Korner Stuff
+      - Otherstuff 3
+  metrics: idsat
+nhv__1:
+  device: nhv
+  mdrc:
+    1A Rules are kool:
+      Compare: {}
+      limit: {}
+      string:
+      - Compare Stuff
+      - Otherstuff 1
+    1A Shrek is the lord and saviour:
+      check: {}
+      limit: {}
+      string:
+      - Check Stuff
+      - Otherstuff 2
+    1B Algorithms are fun:
+      Compare: {}
+      limit: {}
+      string:
+      - Compare Stuff
+      - Otherstuff 1
+    2B Barnie is a dinosaur:
+      check: {}
+      limit: {}
+      string:
+      - Check Stuff
+      - Otherstuff 2
+    3A Transformers was a good movie:
+      Corner_Comp: {}
+      limit: {}
+      string:
+      - Korner Stuff
+      - Otherstuff 3
+    3B Asteroids inbound:
+      Corner_Comp: {}
+      limit: {}
+      string:
+      - Korner Stuff
+      - Otherstuff 3
+  metrics: vtlin
+nhv__2:
+  device: nhv
+  mdrc:
+    1A Rules are kool:
+      Compare: {}
+      limit: {}
+      string:
+      - Compare Stuff
+      - Otherstuff 1
+    1A Shrek is the lord and saviour:
+      check: {}
+      limit: {}
+      string:
+      - Check Stuff
+      - Otherstuff 2
+    1B Algorithms are fun:
+      Compare: {}
+      limit: {}
+      string:
+      - Compare Stuff
+      - Otherstuff 1
+    2B Barnie is a dinosaur:
+      check: {}
+      limit: {}
+      string:
+      - Check Stuff
+      - Otherstuff 2
+    3A Transformers was a good movie:
+      Corner_Comp: {}
+      limit: {}
+      string:
+      - Korner Stuff
+      - Otherstuff 3
+    3B Asteroids inbound: &id001
+      Corner_Comp: {}
+      limit: {}
+      string:
+      - Korner Stuff
+      - Otherstuff 3
+    4A Man Space is kool: *id001
+    4B rules are a muyth: *id001
+  metrics: cggi

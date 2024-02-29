@@ -1,0 +1,64 @@
+---
+rules: 
+- rule: compare
+  rule number: 1A Rules are kool
+  parameter1: <parname1>
+  parameter2: <parname2>
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 1%
+- rule: compare
+  rule number: 1B Algorithms are fun
+  parameter1: <parname1>
+  parameter2: <parname2>
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 1%
+    note: 0.1%
+- rule: check
+  rule number: 1A Shrek is the lord and saviour
+  parameter1: <parname1>
+  parameter2: <parname2>
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 1%
+    note: 0.1%
+- rule: check
+  rule number: 2B Barnie is a dinosaur
+  parameter1: <parname1>
+  parameter2: <parname2>
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 1%
+    note: 0.1%
+- rule: corner_compare
+  rule number: 3A Transformers was a good movie
+  parameter1: <parname1>
+  parameter2: <parname2>
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 1%
+    note: 0.1%
+- rule: corner_compare
+  rule number: 3B Asteroids inbound
+  parameter1: <parname1>
+  parameter2: <parname2>
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 1%
+    note: 0.1%
+- rule: This rule does not exist
+  rule number: 4A Man Space is kool
+  parameter1: <parname1>
+  parameter2: <parname2>
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 1%
+    note: 0.1%
+- rule: Why even read this rule
+  rule number: 4B rules are a muyth
+  parameter1: <parname1>
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 1%
+    note: 0.1%

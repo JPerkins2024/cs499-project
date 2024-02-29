@@ -1,33 +1,13 @@
-
 import yaml
 
-'''
-- rule: compare
-  rule number: <e.g. 1b>
-  parameter1: <parname1>
-  parameter2: <parname2>
-  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
-  limit: 
-    fail: 1%
-'''
 def EX_Compare(ruleID="-1", Param1=None, Param2=None, DictLimit=None):
-    pass
-'''
-      check:
-        metrics: idsat
-      string: ['Verify a metric is within limits','IDSAT']
-      limit:
-        min: 500
-        max: 1000
-'''
-def EX_Check(ruleID="-1", Param1=None, DicLimit=None,DicMetric=None):
-    pass
-def EX_Corner_Compare():
-    pass
+    return  {"Compare":{},"string":["Compare Stuff","Otherstuff 1"],"limit":{}}
 
+def EX_Check(ruleID="-1", Param1=None, DictLimit=None,DicMetric=None):
+    return  {"check":{},"string":["Check Stuff","Otherstuff 2"],"limit":{}}
 
-def RFtoList(DictionaryUsed):
-    pass
+def EX_Corner_Compare(ruleID="-1", ListPar=[], DictLimit=None):
+    return  {"Corner_Comp":{},"string":["Korner Stuff","Otherstuff 3"],"limit":{}}
 
 def Dictionary_Read(path):
     #read in a yaml file as a dict
@@ -35,75 +15,76 @@ def Dictionary_Read(path):
         d = yaml.safe_load(f.read())
     return d
 
-'''
-dic = Dictionary_Read("test")
-print(type(dic))
-x = dic.get("example_dictionary")
-print(x.get("key_2"))
-'''
+def Dictionary_Dump(path, DictUsed):
+    with open(path,'w') as out:
+        yaml.dump(DictUsed, out)
+    return
 
 DSIv1_File  = 0
 DSIv2_File  = 1
 TF_File     = 2
 DSO_File    = 3
 RF_File     = 4
+UKY_Offset  = 5
 
 
 
-PathARR = ["ifxdevsim/example/techfile/mdrc.dsi.yml",
+PathARR = ["ifxdevsim/example/techfile/mdrc.dsi.yml", # ------------------\
             "ifxdevsim/example/techfile/mxs8.dsi.yml",
             "ifxdevsim/example/techfile/mxs8.tf.yml",
             "ifxdevsim/example/techfile/mxs9.dso.yml",
-            "ifxdevsim/example/techfile/test.dsrf.yml"]
+            "ifxdevsim/example/techfile/test.dsrf.yml",# Real Files ------/
+            "TestCasesForExec/test.dsrf.yml",# UKY Test files ------------\
+            "TestCasesForExec/mxs9.dso.yml",
+            "ifxdevsim/example/techfile/test.dsrf.yml",
+            "ifxdevsim/example/techfile/test.dsrf.yml",
+            "ifxdevsim/example/techfile/test.dsrf.yml",
+            "ifxdevsim/example/techfile/test.dsrf.yml",
+            "ifxdevsim/example/techfile/test.dsrf.yml"]#------------------/
 
-dic = Dictionary_Read(PathARR[RF_File])
-print(f" {PathARR[RF_File]}:\n{dic}")
-print(f"Keys : {dic.keys()}" )
+#dicRule = Dictionary_Read(PathARR[RF_File])
+dicRule = Dictionary_Read(PathARR[UKY_Offset])
+#dicDso  = Dictionary_Read(PathARR[DSO_File])
+dicDso  = Dictionary_Read(PathARR[UKY_Offset+1])
+dicDsi  = Dictionary_Read(PathARR[DSIv2_File])
 
+CurrRuleDic = {}
 
-for i in dic.get('rules'):
-    print(f"i : {i.keys()}")
-    test = i.get('rule')
-    '''
-    #python is not being nice
-    match test :
-        case 'compare':
-            print("This rule is compare")
-        case 'check':
-            print("This rule is check")
-        case 'corner_compare':
-            print("This rule corner-Compares")
-        case _ :
-            print("Rule Not Found check rule file for corrupted Rule")
-    '''
-    if test == "compare":
-        print("This rule is compare")
-        EX_Compare()
-    elif test == "check":
-        print("This rule is check")
-        EX_Compare()
-    elif test == "corner_compare":
-        print("This rule is corner_compare")
-        EX_Compare()
-    else:
-        print("Rule Not Found check rule file for corrupted Rule")
-#print(f"Values: \n{x}")
+mdrcExout = {}
 
-'''  
-#write examply by perki
+CorruptedRules=[]
 
-#write a dictionary to a yaml file
-new_dict = {
-    "int_1": 12,
-    "float_1": 12.3,
-    "subdict_1": {
-        "st": "hello",
-        "in": 12
-        },
-    "li": [1,2,3,4,5]
-    }
-
-with open("example_out.yaml",'w') as out:
-    yaml.dump(new_dict, out)
+for DV in dicDso.keys():
+    (mdrcExout[DV]) = {}
+    (mdrcExout[DV]["device"]) = dicDso[DV].get("device")
+    (mdrcExout[DV]["metrics"]) = dicDso[DV].get("metrics")
+    (mdrcExout[DV]["mdrc"]) = {}
     
-'''
+    
+    print(f"Start rules for {DV}")
+    for i in dicRule.get('rules'):
+        if( [i.get('rule'),i.get('rule number')] in CorruptedRules):
+            continue
+
+        print(f"Runing rule:{i.get('rule number')} for {DV}")
+        test = i.get('rule')
+        if test == "compare":
+            CurrRuleDic = EX_Compare(ruleID="Compare")
+        elif test == "check":
+            CurrRuleDic = EX_Check(ruleID="Check")
+        elif test == "corner_compare":
+            CurrRuleDic = EX_Corner_Compare(ruleID="Corner")
+        else:
+            print(f"     Rule:{i.get('rule')} Not Found check rule file for corrupted Rule:{i.get('rule number')}")
+            CorruptedRules.append([i.get('rule'),i.get('rule number')])
+        
+        (mdrcExout[DV]["mdrc"][i.get('rule number')]) = (CurrRuleDic)
+
+    if (len(CorruptedRules) != 0):
+        print(f'\n\nThe following rules were not found:')
+        for name, id in CorruptedRules:
+            print(f'rule: {name}, rule number: {id}')
+        print(f'Please Review your Rule File')
+            
+
+Dictionary_Dump("Test.yaml", mdrcExout)
