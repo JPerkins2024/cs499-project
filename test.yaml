@@ -1,8 +1,11 @@
 nhv__0:
   device: nhv
+  instance parameters:
+    l: 0.5
+    w: 0.5
   mdrc:
     1A Rules are kool:
-      Compare: {}
+      compare: {}
       limit: {}
       string:
       - Compare Stuff
@@ -14,7 +17,7 @@ nhv__0:
       - Check Stuff
       - Otherstuff 2
     1B Algorithms are fun:
-      Compare: {}
+      compare: {}
       limit: {}
       string:
       - Compare Stuff
@@ -26,13 +29,13 @@ nhv__0:
       - Check Stuff
       - Otherstuff 2
     3A Transformers was a good movie:
-      Corner_Comp: {}
+      corner_compare: {}
       limit: {}
       string:
       - Korner Stuff
       - Otherstuff 3
     3B Asteroids inbound:
-      Corner_Comp: {}
+      corner_compare: {}
       limit: {}
       string:
       - Korner Stuff
@@ -40,9 +43,12 @@ nhv__0:
   metrics: idsat
 nhv__1:
   device: nhv
+  instance parameters:
+    l: 0.5
+    w: 0.5
   mdrc:
     1A Rules are kool:
-      Compare: {}
+      compare: {}
       limit: {}
       string:
       - Compare Stuff
@@ -54,7 +60,7 @@ nhv__1:
       - Check Stuff
       - Otherstuff 2
     1B Algorithms are fun:
-      Compare: {}
+      compare: {}
       limit: {}
       string:
       - Compare Stuff
@@ -66,13 +72,13 @@ nhv__1:
       - Check Stuff
       - Otherstuff 2
     3A Transformers was a good movie:
-      Corner_Comp: {}
+      corner_compare: {}
       limit: {}
       string:
       - Korner Stuff
       - Otherstuff 3
     3B Asteroids inbound:
-      Corner_Comp: {}
+      corner_compare: {}
       limit: {}
       string:
       - Korner Stuff
@@ -80,9 +86,12 @@ nhv__1:
   metrics: vtlin
 nhv__2:
   device: nhv
+  instance parameters:
+    l: 0.5
+    w: 0.5
   mdrc:
     1A Rules are kool:
-      Compare: {}
+      compare: {}
       limit: {}
       string:
       - Compare Stuff
@@ -94,7 +103,7 @@ nhv__2:
       - Check Stuff
       - Otherstuff 2
     1B Algorithms are fun:
-      Compare: {}
+      compare: {}
       limit: {}
       string:
       - Compare Stuff
@@ -106,17 +115,15 @@ nhv__2:
       - Check Stuff
       - Otherstuff 2
     3A Transformers was a good movie:
-      Corner_Comp: {}
+      corner_compare: {}
       limit: {}
       string:
       - Korner Stuff
       - Otherstuff 3
-    3B Asteroids inbound: &id001
-      Corner_Comp: {}
+    3B Asteroids inbound:
+      corner_compare: {}
       limit: {}
       string:
       - Korner Stuff
       - Otherstuff 3
-    4A Man Space is kool: *id001
-    4B rules are a muyth: *id001
   metrics: cggi
