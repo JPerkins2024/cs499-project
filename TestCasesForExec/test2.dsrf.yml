@@ -1,0 +1,129 @@
+---
+rules: 
+- rule: compare
+  rule number: 1A Sim 1 & 2
+  device simulations:
+    - mrp1__6
+    - mrp1__7
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    70: 5%
+    note: 7%
+    fail: 10%
+- rule: compare
+  rule number: 1A Sim 2 & 3
+  device simulations:
+    - mrp1__7
+    - mrp1__8
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    note: 50%
+    -70: 5%
+    fail: 100%
+- rule: compare
+  rule number: 1A Sim 1 & 3
+  device simulations: 
+    - mrp1__6
+    - mrp1__8
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    note: 0.1%
+    fail: 1%
+- rule: compare
+  rule number: 1b mrp1 & mrp1_3t 0
+  device simulations: 
+    - mrp1__6
+    - mrp1_3t__9
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 5%
+- rule: compare
+  rule number: 1b mrp1 & mrp1_3t 1
+  device simulations: 
+    - mrp1__7
+    - mrp1_3t__10
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 5%
+- rule: compare
+  rule number: 1b mrp1 & mrp1_3t 2
+  device simulations: 
+    - mrp1__8
+    - mrp1_3t__11
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 5%
+- rule: compare
+  rule number: 1b mrp1 & mrp1_3t 3
+  device simulations: 
+    - mrp1__6
+    - mrp1_3t__10
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 5%
+- rule: compare
+  rule number: 1b mrp1 & mrp1_3t 4
+  device simulations: 
+    - mrp1__6
+    - mrp1_3t__11
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 5%
+- rule: compare
+  rule number: 1b mrp1 & mrp1_3t 5
+  device simulations: 
+    - mrp1__7
+    - mrp1_3t__9
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 5%
+- rule: compare
+  rule number: 1b mrp1 & mrp1_3t 6
+  device simulations: 
+    - mrp1__7
+    - mrp1_3t__11
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 5%
+- rule: compare
+  rule number: 1b mrp1 & mrp1_3t 7
+  device simulations: 
+    - mrp1__8
+    - mrp1_3t__9
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 5%
+- rule: compare
+  rule number: 1b mrp1 & mrp1_3t 8
+  device simulations: 
+    - mrp1__8
+    - mrp1_3t__10
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 5%
+- rule: compare
+  rule number: 1b nhv idsat
+  device simulations: 
+    - nhv__12
+    - nhv__13
+  string: [ <string at top of rule hierarchy> , <string at next level of rule hierarchy> ] 
+  limit: 
+    fail: 1%
+- rule: check
+  rule number: check idsat value
+  device simulations: nhv__12
+  string: 
+  - Verify a metric is within limits
+  - IDSAT
+  limit:
+    min: 500
+    max: 1000
+- rule: check
+  rule number: check idsat value 1
+  device simulations: nhv__13
+  string:
+  - Verify a metric is within limits
+  - IDSAT
+  limit:
+    min: .001
+    max: 1000

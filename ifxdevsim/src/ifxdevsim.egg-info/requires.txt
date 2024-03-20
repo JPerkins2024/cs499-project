@@ -1,9 +1,9 @@
-numpy
-pandas
+cexprtk
 coloredlogs
 flatten_json
 frozendict
-cexprtk
+numpy
+pandas
 pint
-typing_extensions>=4.0
 pylatexenc
+typing_extensions>=4.0
