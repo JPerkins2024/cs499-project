@@ -316,9 +316,33 @@ class DevSim:
             if not self.dsi.Data[keys]:
                 continue
             param = Parameter(config, self.techdata, self.dsi.Data[keys], keys)
+            print(keys)
+            print(self.dsi.Data[keys])
+            print(type(self.dsi.Data[keys]))
+            print(param.measure_name)
             self.dsi.AddParam(param)
-            bucket_idx = None
+            #print(self.dsi.Data[keys]['mdrc'].keys())
+            if 'mdrc' in self.dsi.Data[keys]:
+                for rule in self.dsi.Data[keys]['mdrc']:
+                    if 'compare' in self.dsi.Data[keys]['mdrc'][rule]:
+                        if 'simulator' in self.dsi.Data[keys]['mdrc'][rule]['compare']['control']:
+                            print(self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator'])
+                            print("making copy")
+                            new_param = self.dsi.Data[keys].copy()
+                            new_param.pop("mdrc")
+                            new_param["control"]["simulator"] = self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
+                            new_param["control"]["language"] = self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
+                            new_key = keys + "_"  + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
+                            #new_key = keys.split("__")[0] + "_" + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator'] + "__"  + keys.split("__")[1]
+                            new_param["measure name"] = new_param["measure name"] + "_" + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
+                            print("new stuff")
+                            print(new_key)
+                            print(new_param)
+                            self.dsi.AddParam(Parameter(config,self.techdata,new_param,new_key))
 
+
+            print("\n\n\n")
+            bucket_idx = None
             for i, bucket in enumerate(jobs):
                 if not bucket.control == param.param_data["control"]:
                     continue
@@ -330,7 +354,8 @@ class DevSim:
             if bucket_idx is not None:
                 jobs[bucket_idx].add_param(param)
             else:
-                jobs.append(Controller(param))
+                pass
+#                jobs.append(Controller(param))
 
         jobids = []
         graphonly = None
