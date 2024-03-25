@@ -1,0 +1,65 @@
+# Notes 
+# 1.Overfull \hbox (not error): components size exceeded the page margin (textwidth 
+# and/or textlength), consider breaking with a line break (\\) to prevent warning
+# 
+#####################################################################################################
+# Keyword List:
+# Text:
+#   Normal: Texts inserted here are displayed normally in final pdf 
+#   Bold: Texts inserted here are bolded in final pdf 
+#   Italics: Texts inserted here are italicized in final pdf 
+#   Underline: Texts inserted here are underlined in final pdf 
+#   Autofill: Define a number or range of paragraphs of porem ipsum to be inserted in final pdf
+# Graphics: 
+#   Path: Inserted path to graphics file here
+#   Scale: Graphics size scaling (insert number)
+#   Align: Graphics alignment (Center, Left, Right) 
+#   Offset: Insert distance (e.g: 10pt) for horizontal offset (to the right) from orginal alignment 
+#   Caption: 
+# 
+# Spacing: Spacing unit should be (pt) for easier reference to page margin (540x690pt)
+# although other unit of length can be used based on personal needs. Compilation of 
+# available unit of length can be found here: https://www.overleaf.com/learn/latex/Lengths_in_LaTeX
+#   - Vspace: Vertical spacing
+#   - Hspace: Horizontal Spacing
+#   - Newpage: Add new page
+# 
+# Section(0 - 5): 
+# Represents the highest level in document sectioning (0-Part, 1-Section,2-Subsection,
+# 3-Subsubsection,4-Paragraph,5-Subparagraph)
+# Depth: Highest level of Section in auto generated template 
+# Col: Default number plots per row in a report (Warnings: Col values > 2 
+# will require graphics resizing, affecting font size and readability of certain 
+# components within the plot environment)
+#
+#####################################################################################################
+# Styling 
+# Warning: Edits to this section should strictly be done in default layout (default_layout.yaml)
+# and modifications should not involve removing any of the original blocks
+- Font: 12pt
+- Col: 3
+- Depth: 1 
+
+#####################################################################################################
+# Heading 
+- Title: 
+    Name: Default Template
+    Author: Lam Ha
+    Date: \today
+- Graphics: 
+    File: infineon_logo.jpg
+    Scale: 0.5
+    Align: Center
+- Text: 
+    Autofill: 1-4
+- Newpage: 
+- Table of Content:
+- Vspace: 20pt
+- List of Figures: 
+- Newpage:
+####################################################################################################
+# Body
+####################################################################################################
+# Ending (Not implemented)
+- References: # Invalid headers will be ignored
+- Notes: # Invalid headers will be ignored

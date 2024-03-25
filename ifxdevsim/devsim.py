@@ -18,7 +18,7 @@ from .views.view_funcs import print_valid_views, print_config, get_pdf_outputs
 import subprocess
 from .metrics.mdm_parser import print_valid_routines
 from .utils import set_scale
-
+import re
 
 class DevSim:
     # Update: this actually works now, simply printing
@@ -307,7 +307,9 @@ class DevSim:
                 logger.info(f"Running {command}")
                 subprocess.run(command,shell=True)
             exit()
-
+    
+    def TempRuleExec(self, Device="", Comparison="", limit={}, other={}):
+        return {Device:"yey", 'DBG':other}
 
     def main(self):
         jobs = []
@@ -316,7 +318,40 @@ class DevSim:
             if not self.dsi.Data[keys]:
                 continue
             param = Parameter(config, self.techdata, self.dsi.Data[keys], keys)
+            
+            #print(keys)
+            #print(self.dsi.Data[keys])
+            #print(type(self.dsi.Data[keys]))
+            #print(param.measure_name)
             self.dsi.AddParam(param)
+            self.dsi.AddParam(param)
+            bucket_idx = None
+            #print(self.dsi.Data[keys]['mdrc'].keys())
+            if 'mdrc' in self.dsi.Data[keys]:
+                for rule in self.dsi.Data[keys]['mdrc']:
+                    if 'compare' in self.dsi.Data[keys]['mdrc'][rule]:
+                        if 'simulator' in self.dsi.Data[keys]['mdrc'][rule]['compare']['control']:
+                            #print(self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator'])
+                            #print("making copy")
+                            new_param = self.dsi.Data[keys].copy()
+                            new_param.pop("mdrc")
+                            new_param["control"]["simulator"] = self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
+                            new_param["control"]["language"] = self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
+                            new_key = keys + "_"  + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
+                            #new_key = keys.split("__")[0] + "_" + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator'] + "__"  + keys.split("__")[1]
+                            new_param["measure name"] = new_param["measure name"] + "__" + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
+                            #print("new stuff")
+                            print(new_key)
+                            #print(new_param)
+                            try:
+                                self.dsi.AddParam(Parameter(config,self.techdata,new_param,new_key))
+                            except Exception as e:
+                                print(f"woopsie {e}\n K:{new_key}, \n P: {new_param}")
+                                continue
+
+
+
+            print("\n\n\n")
             bucket_idx = None
 
             for i, bucket in enumerate(jobs):
@@ -330,7 +365,8 @@ class DevSim:
             if bucket_idx is not None:
                 jobs[bucket_idx].add_param(param)
             else:
-                jobs.append(Controller(param))
+                pass
+                #jobs.append(Controller(param))
 
         jobids = []
         graphonly = None
@@ -362,8 +398,80 @@ class DevSim:
     # For future modules, the args.<whatever> is just the
     # full name of the <whatever> argument.
 
-print("test")
-sys.exit(1)
+        #Execute model
+        print(f"ALL K: {list(self.dsi.Data.keys())}")
+        
+        #reg ex: [A134__Dev__1] matches [A11__DEV__2__Sim] Does not, nither does [DEV_123_SIM]
+        FindComparisonReg = re.compile('^[a-zA-Z]+[0-9]+__[a-zA-Z]+__[0-9]+$')
+
+        RuleReport = []        
+        # need to change to get input from the rule file (Woops)
+        for device in self.dsi.Data:
+            RuleDev = []
+            if not self.dsi.Data[device]:
+                continue
+            #print(f"K: {device}")
+
+            #if not an original then pass, executing rules only
+            if( not (FindComparisonReg.match(device))):
+                continue
+            #print(f"D: {self.dsi.Data[keys]}")
+            #print(f"D: [param data] {type(self.dsi.Data[device])}")
+            #print(f"D: [param data] {list(self.dsi.Data[device].keys())}")
+            #print(f"P: {param.measure_name}")
+
+
+            for rule in self.dsi.Data[device]["mdrc"]:
+                RuleOut = None
+                ##Comparison
+                ## xPas in the limits aswell
+                ##check 
+                ## min and max
+                ##corner comp
+                ##TBD
+                if ("compare" in self.dsi.Data[device]["mdrc"][rule]):
+                    FindDevRE = "^[a-zA-Z]+[0-9]+__[a-zA-Z]+__[0-9]+__" + self.dsi.Data[device]["mdrc"][rule]["compare"]["control"]["simulator"]+"$"
+                    print(f"re = {FindDevRE}")
+                    FindDevRE = re.compile(FindDevRE)
+                    FoundD = []
+                    for deviceS in list(self.dsi.Data):
+                        print(f'test loop :{deviceS}')
+                        if FindDevRE.match(deviceS):
+                            FoundD.append(deviceS)
+                    
+                    #if multiple options are found we need to try to find the one with the same metrics
+                    if (len(FoundD) > 1):
+                        for deviceS in FoundD:
+                            if (self.dsi.Data[deviceS]["metrics"] == self.dsi.Data[device]["metrics"]):
+                                RuleOut = self.TempRuleExec(Device=device, Comparison=deviceS,limit=self.dsi.Data[device]["mdrc"][rule]["limit"],other={rule:'d'})
+                                break
+                    elif (len(FoundD)==1):
+                        RuleOut = self.TempRuleExec(Device=device, Comparison=FoundD[0],limit=self.dsi.Data[device]["mdrc"][rule]["limit"],other={rule:'c'})
+                    else:
+                        RuleOut = {rule:"Comparison Not Found"}
+                elif ("check" in self.dsi.Data[device]["mdrc"][rule]):
+                    print(f"Runing check for [R:{rule}, D:{device}]")
+                    if(self.dsi.Data[device]["metrics"] != self.dsi.Data[device]["mdrc"][rule]["check"]["metrics"]):
+                        RuleOut = {rule:"check metric Not Found"}
+                    else:
+                        RuleOut = self.TempRuleExec(Device=device, limit=self.dsi.Data[device]["mdrc"][rule]["limit"],other={rule:'b'})
+                elif ("corner_compares" in self.dsi.Data[device]["mdrc"][rule]):
+                    print(f"Runing corner_compares for [R:{rule}, D:{device}]")
+                    RuleOut = self.TempRuleExec(Device=device, Comparison=FoundD[0],limit=self.dsi.Data[device]["mdrc"][rule]["limit"],other={rule:'a'})
+                elif ("Device comparisons" in self.dsi.Data[device]["mdrc"][rule]):
+                    print(f"Runing Device comparisons for [R:{rule}, D:{device}]")
+                    RuleOut = self.TempRuleExec()
+                else:
+                    print(f"Error in rule [{rule}], rule action not found")
+
+                if RuleOut == None:
+                    RuleOut = "Error AT {" + str(rule) + "} , {" + device + "}"
+
+                RuleDev.append(RuleOut)
+            RuleReport.append(RuleDev.copy())
+        
+        for k in RuleReport:
+            print(k)
 
 if __name__ == "__main__":
     dev = DevSim()
