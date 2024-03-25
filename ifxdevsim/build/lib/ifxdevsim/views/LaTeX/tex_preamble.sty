@@ -1,0 +1,79 @@
+% Page Styling 
+\usepackage{adjustbox}
+\usepackage{float}
+\usepackage{geometry}
+\geometry{
+total={540pt,690pt},
+}
+\headheight = 25pt
+\footskip = 30pt
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[R]{Infineon Technologies}
+\fancyhead[L]{Document}
+\fancyfoot[R]{Do not Copy}
+\renewcommand{\footrulewidth}{.4pt}
+
+
+% Plots 
+\usepackage{pgfplots} \pgfplotsset{compat=1.16} 
+% \usepgfplotslibrary{clickable}
+\usepackage{graphicx}
+
+
+% Table
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{pgfplotstable} 
+\pgfplotstableset{
+    trim cells = true,
+    col sep=comma,
+    begin table= \begin{longtable},
+    end table= \end{longtable}, 
+    every last row/.style={
+        after row=\bottomrule
+    },
+    string type,
+    every head row/.append style={
+    before row=\toprule,
+    after row={\midrule
+    \endhead}
+    },
+}
+
+
+% Text & Font 
+\usepackage[T1]{fontenc}
+\catcode`_=12
+\begingroup\lccode`~=`_\lowercase{\endgroup\let~\sb}
+
+
+% Caption 
+\usepackage{caption} \captionsetup{belowskip=-5pt,margin = {20pt,0pt}}
+\DeclareCaptionListFormat{myfmt}{#1. #2}
+\usepackage[list=true,listformat=myfmt]{subcaption}\captionsetup[subfigure]{aboveskip=0pt,margin = {22.5pt,0pt}}
+
+
+
+% Others 
+\usepackage{standalone} % Files compiled under 'standalone' documnetlass is more simple to \include 
+\setcounter{secnumdepth}{5} %Set depth of numbered sections
+\setcounter{tocdepth}{5} % Set depth of Table of Contents
+% \setcounter{lofdepth}{2}
+\setlength{\textfloatsep}{7pt plus 2pt minus 2pt}
+\setlength{\intextsep}{7pt plus 2pt minus 2pt}
+\usepackage{lipsum} % Package for text lorem ipsum autofill
+% \usetikzlibrary{external}
+% \tikzexternalize[prefix=external/]
+\usepackage{bookmark} 
+\hypersetup{
+    linktoc=all,  
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+

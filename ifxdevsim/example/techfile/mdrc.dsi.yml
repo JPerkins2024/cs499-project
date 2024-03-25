@@ -13,7 +13,7 @@ nhv:
       compare:
         control:
           simulator: titan
-      string: ['Simulator checks','Titan']
+      string: ['Simulator checks,Titan']
       limit:
         note: 0.1%
         fail: 1%
@@ -21,14 +21,14 @@ nhv:
       compare:
         control:
           simulator: hspice
-      string: ['Simulator checks','Hspice']
+      string: ['Simulator checks,Hspice']
       limit:
         note: 0.1%
         fail: 1%
     4:  
       check:
         metrics: idsat
-      string: ['Verify a metric is within limits','IDSAT']
+      string: ['Verify a metric is within limits,IDSAT']
       limit:
         min: 500
         max: 1000

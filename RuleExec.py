@@ -54,9 +54,9 @@ def EX_Check(ruleID="-1", dvSim=None, DictLimit=None):
     if dvSim > minimum and dvSim < maximum:
         limitResult = "pass"
     return  {"check": dvSim, "limit": limitResult}
-
+  
 def EX_Corner_Compare(ruleID="-1", ListPar=[], DictLimit=None):
-    return  {"Corner_Comp":{},"string":["Korner Stuff","Otherstuff 3"],"limit":{}}
+    return  {"corner_compare":{},"string":["Korner Stuff","Otherstuff 3"],"limit":{}}
 
 def EX_Get_Sim_Val(dsoDict, simName, corner="top_tt"):
     simulation = dsoDict.get(simName)
@@ -156,6 +156,7 @@ for DV in dicDso.keys():
     (mdrcExout[DV]) = {}
     (mdrcExout[DV]["device"]) = dicDso[DV].get("device")
     (mdrcExout[DV]["metrics"]) = dicDso[DV].get("metrics")
+    (mdrcExout[DV]["instance parameters"]) = dicDso[DV].get("instance parameters")
     (mdrcExout[DV]["mdrc"]) = {}
     
     
@@ -180,6 +181,7 @@ for DV in dicDso.keys():
             CurrRuleDic = EX_Corner_Compare(ruleID="Corner")
         else:
             print(f"     Rule:{i.get('rule')} Not Found check rule file for corrupted Rule:{i.get('rule number')}")
+
             CorruptedRules.append([test,ruleNum])
         
         (mdrcExout[DV]["mdrc"][ruleNum]) = (CurrRuleDic)

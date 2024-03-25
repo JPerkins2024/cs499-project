@@ -1,0 +1,338 @@
+---
+valid simulators: 
+  spectre: &spectre
+    options: 
+    - numdgt=10
+    - gmin=1.0e-18
+    - tnom=25
+    - ingold=2
+    language: spectre
+    extension: scs
+    simargs: spectre +l @CORNER@.log +lqt 0 @CORNER@.scs
+    log: .log
+    measures:
+    - mt
+    monte carlo:
+      args: variations=all numruns=1000 seed=1 sampling=lhs
+      syntax: spectre
+    load balancer: "bsub -R \"(osrel==60 || osrel==70) && ui=spectre\""
+  aps:
+    <<: *spectre
+    simargs: spectre +aps +l @CORNER@.log +lqt 0 @CORNER@.scs
+  xps:
+    <<: *spectre
+    simargs: spectre +xps=s3 +l @CORNER@.log +lqt 0 @CORNER@.scs
+  eldo: &eldo
+    options: 
+    - numdgt=10
+    - gmin=1.0e-18
+    - tnom=25
+    - ingold=2
+    - post=1
+    - nomod
+    - notrc
+    - tuning=vhigh
+    - compat
+    - gminddc=1.0e-18
+    extension: cir
+    simargs: eldo -classic @CORNER@.cir  
+    log: .chi
+    measures:
+    - ma
+    - ms
+    monte carlo:
+      args: sweep monte=1000
+      syntax: hspice
+    load balancer: "bsub -R \"(osrel==60 || osrel==70) && ui=eldo\""
+  premier:
+    <<: *eldo
+    simargs: eldo -premier @CORNER@.cir  
+  afs:
+    options: 
+    - numdgt=10
+    - gmin=1.0e-18
+    - tnom=25
+    - post=1
+    language: spectre
+    extension: scs
+    simargs: afs @CORNER@.scs -f hspicebin -o @CORNER@
+    log: .log
+    measures:
+    - ma
+    - ms
+    monte carlo:
+      args: variations=all numruns=1000 seed=1 sampling=lhs
+      syntax: spectre
+    load balancer: "bsub -R \"(osrel==60 || osrel==70) && ui=afs\""
+  hspice:
+    options: 
+    - numdgt=10
+    - gmin=1.0e-18
+    - tnom=25
+    - ingold=2
+    - post=1
+    - nomod
+    - gmindc=1.0e-18
+    extension: ckt
+    simargs: hspice @CORNER@.ckt -o @CORNER@
+    log: .lis
+    measures:
+    - ma
+    - ms
+    - mt
+    monte carlo:
+      args: sweep monte=1000
+      syntax: hspice
+    load balancer: "bsub -R \"(osrel==60 || osrel==70) && ui=hspice\""
+  xa:
+    options: 
+    - numdgt=10
+    - gmin=1.0e-18
+    - tnom=25
+    - ingold=2
+    - post=1
+    - nomod
+    - gmindc=1.0e-18
+    - xa_cmd="set_meas_option -format hspice"
+    - xa_cmd="set_sim_level -level 7"
+    extension: ckt
+    simargs: xa @CORNER@.ckt -o @CORNER@
+    log: .log
+    measures:
+    - mt
+    monte carlo:
+      args: sweep monte=1000
+      syntax: hspice
+    load balancer: "bsub -R \"(osrel==60 || osrel==70) && ui=xa\""
+  finesim: &finesim
+    options:
+    - numdgt=10
+    - gmin=1.0e-18
+    - tnom=25
+    - keep_0v_dcvs=1
+    - finesim_model_verification_mode=1
+    extension: ckt
+    simargs: finesim @CORNER@.ckt -np 1 -out @CORNER@ 
+    log: .log
+    measures:
+    - ma
+    - md
+    monte carlo:
+      args: sweep monte=1000
+      syntax: hspice
+    load balancer: "bsub -R \"(osrel==60 || osrel==70) && ui=finesim\""
+  finesim_sp:
+    <<: *finesim
+    language: spectre
+    extension: scs
+    simargs: finesim @CORNER@.scs -np 1 -out @CORNER@ -spectre
+    monte carlo:
+      args: variations=all numruns=1000 seed=1 sampling=lhs
+      syntax: spectre
+  titan:
+    options: 
+    - gmin=1.0e-18
+    - tnom=25
+    extension: tit
+    simargs: titan -local @CORNER@
+    log: .lis
+    measures:
+    - dc.measure
+    - ac.measure
+    - tr.measure
+    monte carlo:
+      args: runs=1000 keep_nominal
+      syntax: titan
+    load balancer: "bsub -R \"(osrel==60 || osrel==70) && ui=titan\""
+netlist:
+  res:
+    instance: r
+    ports: r s
+  res2t:
+    instance: x
+    ports: r s
+  res3t:
+    instance: x
+    ports: r s b
+  ind:
+    instance: r
+    ports: 1 2
+  ind2t:
+    instance: x
+    ports: 1 2
+  ind3t:
+    instance: x
+    ports: 1 2 3
+  ind4t:
+    instance: x
+    ports: 1 2 3 4
+  cap:
+    instance: c
+    ports: 1 2
+  cap1t:
+    instance: x
+    ports: "1" 
+  cap2t:
+    instance: x
+    ports: 1 2
+  cap3t:
+    instance: x
+    ports: 1 2 3
+  cap4t:
+    instance: x
+    ports: 1 2 3 4
+  cap5t:
+    instance: x
+    ports: 1 2 3 4 5
+  cap6t:
+    instance: x
+    ports: 1 2 3 4 5 6
+  cap7t:
+    instance: x
+    ports: 1 2 3 4 5 6 7
+  diode:
+    instance: d
+    ports: j s
+  diode2t:
+    instance: x
+    ports: j s
+  npn:
+    instance: q
+    ports: c b e s 
+  npn3:
+    instance: q
+    ports: c b e 
+  npn4:
+    instance: q
+    ports: c b e s 
+  npn3t:
+    instance: x
+    ports: c b e 
+  npn4t:
+    instance: x
+    ports: c b e s 
+  pnp:
+    instance: q
+    ports: c b e  
+    reverse sweep: true
+  pnp3:
+    instance: q
+    ports: c b e  
+    reverse sweep: true
+  pnp4:
+    instance: q
+    ports: c b e s 
+    reverse sweep: true
+  pnp3t:
+    instance: x
+    ports: c b e  
+    reverse sweep: true
+  pnp4t:
+    instance: x
+    ports: c b e s 
+    reverse sweep: true
+  nmos:
+    instance: m
+    ports: d g s b
+  nmos2t:
+    instance: x
+    ports: g b 
+  nmos3t:
+    instance: x
+    ports: g b dnw
+  nmos4:
+    instance: m
+    ports: d g s b
+  nmos4t:
+    instance: x
+    ports: d g s b
+  nmos5t:
+    instance: x
+    ports: d g s b dnw
+  nmos6t:
+    instance: x
+    ports: d g s b dnw sub
+  pmos:
+    instance: m
+    ports: d g s b
+    reverse sweep: true
+  pmos4:
+    instance: m
+    ports: d g s b
+    reverse sweep: true
+  pmos2t:
+    instance: x
+    ports: g b 
+    reverse sweep: true
+  pmos3t:
+    instance: x
+    ports: g b sub
+    reverse sweep: true
+  pmos4t:
+    instance: x
+    ports: d g s b
+    reverse sweep: true
+  pmos5t:
+    instance: x
+    ports: d g s b sub
+    reverse sweep: true
+  pmos6t:
+    instance: x
+    ports: d g s b bl sub
+    reverse sweep: true
+# Initialize is for settings that must be set    
+initialize:    
+  control:
+    step size: 0.01
+    temperature: 25
+    simulator: spectre
+    mode: normal
+# Default is for settings that are used only when needed
+default:  
+  definitions:
+    vmin: -0.5
+    vmax: 2.0
+    frequency: 1e5
+    itar: 100.0e-9
+    reverse sweep: false
+  control:
+    tprint: 1n
+    tstop: 1u
+    load balancer: bsub 
+calculator:
+  reserved definitions:
+  - vcc
+  - vcc_leak
+  - vdd
+  - vdd_leak
+  - vgg
+  - vbb
+  - vdlin
+  - cc
+units:
+  # Correspond to devsim_label/devsim_keys in smartsoa.yml, can be anything that appears in simulation results
+  noconvert:
+    - degradation
+    - nbti_degradation
+    - hci_degradation
+    - "degradation (idsat %)"
+    - "degradation (idlin %)"
+    - "degradation (vtlin V)"
+    - 'didsat(hci %)'
+    - 'didlin(hci %)'
+    - 'dvtlin(hci v)'
+    - didsat(bti %)
+    - didlin(bti %)
+    - dvtlin(bti v)
+    - lifetime(hci+bti yr)
+    - 'lifetime(hci yr)'
+    - 'lifetime(bti yr)'
+    - asserts
+views:
+  csv:
+    columns:
+      paramname: true
+      stimuli: 
+        all: true
+      simulations: 
+        all: true

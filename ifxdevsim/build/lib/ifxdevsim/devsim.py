@@ -362,8 +362,6 @@ class DevSim:
     # For future modules, the args.<whatever> is just the
     # full name of the <whatever> argument.
 
-print("test")
-sys.exit(1)
 
 if __name__ == "__main__":
     dev = DevSim()
