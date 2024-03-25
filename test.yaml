@@ -1,129 +1,14 @@
-nhv__0:
-  device: nhv
-  instance parameters:
-    l: 0.5
-    w: 0.5
-  mdrc:
-    1A Rules are kool:
-      compare: {}
-      limit: {}
-      string:
-      - Compare Stuff
-      - Otherstuff 1
-    1A Shrek is the lord and saviour:
-      check: {}
-      limit: {}
-      string:
-      - Check Stuff
-      - Otherstuff 2
-    1B Algorithms are fun:
-      compare: {}
-      limit: {}
-      string:
-      - Compare Stuff
-      - Otherstuff 1
-    2B Barnie is a dinosaur:
-      check: {}
-      limit: {}
-      string:
-      - Check Stuff
-      - Otherstuff 2
-    3A Transformers was a good movie:
-      corner_compare: {}
-      limit: {}
-      string:
-      - Korner Stuff
-      - Otherstuff 3
-    3B Asteroids inbound:
-      corner_compare: {}
-      limit: {}
-      string:
-      - Korner Stuff
-      - Otherstuff 3
-  metrics: idsat
-nhv__1:
-  device: nhv
-  instance parameters:
-    l: 0.5
-    w: 0.5
-  mdrc:
-    1A Rules are kool:
-      compare: {}
-      limit: {}
-      string:
-      - Compare Stuff
-      - Otherstuff 1
-    1A Shrek is the lord and saviour:
-      check: {}
-      limit: {}
-      string:
-      - Check Stuff
-      - Otherstuff 2
-    1B Algorithms are fun:
-      compare: {}
-      limit: {}
-      string:
-      - Compare Stuff
-      - Otherstuff 1
-    2B Barnie is a dinosaur:
-      check: {}
-      limit: {}
-      string:
-      - Check Stuff
-      - Otherstuff 2
-    3A Transformers was a good movie:
-      corner_compare: {}
-      limit: {}
-      string:
-      - Korner Stuff
-      - Otherstuff 3
-    3B Asteroids inbound:
-      corner_compare: {}
-      limit: {}
-      string:
-      - Korner Stuff
-      - Otherstuff 3
-  metrics: vtlin
-nhv__2:
-  device: nhv
-  instance parameters:
-    l: 0.5
-    w: 0.5
-  mdrc:
-    1A Rules are kool:
-      compare: {}
-      limit: {}
-      string:
-      - Compare Stuff
-      - Otherstuff 1
-    1A Shrek is the lord and saviour:
-      check: {}
-      limit: {}
-      string:
-      - Check Stuff
-      - Otherstuff 2
-    1B Algorithms are fun:
-      compare: {}
-      limit: {}
-      string:
-      - Compare Stuff
-      - Otherstuff 1
-    2B Barnie is a dinosaur:
-      check: {}
-      limit: {}
-      string:
-      - Check Stuff
-      - Otherstuff 2
-    3A Transformers was a good movie:
-      corner_compare: {}
-      limit: {}
-      string:
-      - Korner Stuff
-      - Otherstuff 3
-    3B Asteroids inbound:
-      corner_compare: {}
-      limit: {}
-      string:
-      - Korner Stuff
-      - Otherstuff 3
-  metrics: cggi
+
+example_int: 12
+example_float: 3.14
+example_string: "this is a string"
+no_quote_string: this is a string with no quotes
+example_list:
+  - one
+  - two
+  - three
+example_dictionary:
+  key_1: 12
+  key_2: string
+  subdict_1:
+    subdict_key: value
