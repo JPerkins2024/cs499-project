@@ -118,7 +118,7 @@ class ReportGenerator():
         report["Rule_Distribution"]["Note"] ={"count":len(self.getNoteRules()), "Rules":self.getNoteRules()}
         report["Rule_Distribution"]["Warning"] = {"count":len(self.getWarningRules()), "Rules":self.getWarningRules()}
         report["Rule_Distribution"]["Fail"] = {"count":len(self.getFailRules()), "Rules":self.getFailRules()}
-        report["Rule_Distribution"]["Other"] = {"count":len(self.getInvalidRules()), "Rules":self.getinvaludRules()}
+        report["Rule_Distribution"]["Other"] = {"count":len(self.getInvalidRules()), "Rules":self.getInvalidRules()}
         print(report)
         with open(("./" + title),'w') as out:
             yaml.dump(report, out)
