@@ -197,6 +197,10 @@ class DevSim:
         self.techdata = None
         self.dsi_file = args.input
         try:
+            self.dsrf_file = args.input.split(".")[0] + ".dsrf.yml"
+        except:
+            self.dsrf_file = "output.dsrf.yml"
+        try:
             tf = open(self.techfile)
             logger.info("Techfile found.")
             self.techdata = yaml.load(tf)
@@ -311,28 +315,28 @@ class DevSim:
 
     def build_dsrf_rule(self,param_object,rule_number):
         #call in main to test
-    	new_rule = {}
-    	#case for compare rule
-    	if 'compare' in param_object['mdrc'][rule_number]:
-    	    new_rule['rule'] = 'compare'
-    	    new_rule['rule number'] = rule_number
-    	    new_rule['device simulations'] = []
-    	    new_rule['device simulations'].append(param_object['measure name'])
-    	    new_rule['device simulations'].append(param_object['measure name'] + "_" + param_object['mdrc'][rule_number]['compare']['control']['simulator'])
-    	    new_rule['string'] = param_object['mdrc'][rule_number]['string']
-    	    new_rule['limit'] = param_object['mdrc'][rule_number]['limit']
-    	    self.dsrf_rules['rules'].append(new_rule)	
-    	#case for limit check rule
-    	if 'check' in param_object['mdrc'][rule_number]:
-    	    #only write check instruction if check rule checks for metric simulated by this param object
-    	    if param_object['mdrc'][rule_number]['check']['metrics'] == param_object['metrics']:
-    	    	new_rule['rule'] = 'check'
-    	    	new_rule['rule number'] = rule_number
-    	    	new_rule['device simulations'] = []
-    	    	new_rule['device simulations'].append(param_object['measure name'])
-    	    	new_rule['string'] = param_object['mdrc'][rule_number]['string']
-    	    	new_rule['limit'] = param_object['mdrc'][rule_number]['limit']
-    	    	self.dsrf_rules['rules'].append(new_rule)
+        new_rule = {}
+        #case for compare rule
+        if 'compare' in param_object['mdrc'][rule_number]:
+            new_rule['rule'] = 'compare'
+            new_rule['rule number'] = rule_number
+            new_rule['device simulations'] = []
+            new_rule['device simulations'].append(param_object['measure name'])
+            new_rule['device simulations'].append(param_object['measure name'] + "_" + param_object['mdrc'][rule_number]['compare']['control']['simulator'])
+            new_rule['string'] = param_object['mdrc'][rule_number]['string']
+            new_rule['limit'] = param_object['mdrc'][rule_number]['limit']
+            self.dsrf_rules['rules'].append(new_rule)	
+        #case for limit check rule
+        if 'check' in param_object['mdrc'][rule_number]:
+            #only write check instruction if check rule checks for metric simulated by this param object
+            if param_object['mdrc'][rule_number]['check']['metrics'] == param_object['metrics']:
+                new_rule['rule'] = 'check'
+                new_rule['rule number'] = rule_number
+                new_rule['device simulations'] = []
+                new_rule['device simulations'].append(param_object['measure name'])
+                new_rule['string'] = param_object['mdrc'][rule_number]['string']
+                new_rule['limit'] = param_object['mdrc'][rule_number]['limit']
+                self.dsrf_rules['rules'].append(new_rule)
 
 
     def main(self):
@@ -365,7 +369,6 @@ class DevSim:
             
 
 
-            print("\n\n\n")
             bucket_idx = None
             for i, bucket in enumerate(jobs):
                 if not bucket.control == param.param_data["control"]:
@@ -380,8 +383,9 @@ class DevSim:
             else:
                 pass
 #                jobs.append(Controller(param))
-        with open("test_dsrf.yml","w") as f:
-            	yaml.dump(self.dsrf_rules,f)
+        if self.dsrf_rules['rules'] != []:
+            with open(self.dsrf_file,"w") as f:
+                yaml.dump(self.dsrf_rules,f)
         jobids = []
         graphonly = None
         nosim = True
