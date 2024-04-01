@@ -307,6 +307,32 @@ class DevSim:
                 logger.info(f"Running {command}")
                 subprocess.run(command,shell=True)
             exit()
+        self.dsrf_rules = {'rules':[]}
+
+    def build_dsrf_rule(self,param_object,rule_number):
+        #call in main to test
+    	new_rule = {}
+    	#case for compare rule
+    	if 'compare' in param_object['mdrc'][rule_number]:
+    	    new_rule['rule'] = 'compare'
+    	    new_rule['rule number'] = rule_number
+    	    new_rule['device simulations'] = []
+    	    new_rule['device simulations'].append(param_object['measure name'])
+    	    new_rule['device simulations'].append(param_object['measure name'] + "_" + param_object['mdrc'][rule_number]['compare']['control']['simulator'])
+    	    new_rule['string'] = param_object['mdrc'][rule_number]['string']
+    	    new_rule['limit'] = param_object['mdrc'][rule_number]['limit']
+    	    self.dsrf_rules['rules'].append(new_rule)	
+    	#case for limit check rule
+    	if 'check' in param_object['mdrc'][rule_number]:
+    	    #only write check instruction if check rule checks for metric simulated by this param object
+    	    if param_object['mdrc'][rule_number]['check']['metrics'] == param_object['metrics']:
+    	    	new_rule['rule'] = 'check'
+    	    	new_rule['rule number'] = rule_number
+    	    	new_rule['device simulations'] = []
+    	    	new_rule['device simulations'].append(param_object['measure name'])
+    	    	new_rule['string'] = param_object['mdrc'][rule_number]['string']
+    	    	new_rule['limit'] = param_object['mdrc'][rule_number]['limit']
+    	    	self.dsrf_rules['rules'].append(new_rule)
 
 
     def main(self):
@@ -316,18 +342,15 @@ class DevSim:
             if not self.dsi.Data[keys]:
                 continue
             param = Parameter(config, self.techdata, self.dsi.Data[keys], keys)
-            print(keys)
-            print(self.dsi.Data[keys])
-            print(type(self.dsi.Data[keys]))
-            print(param.measure_name)
             self.dsi.AddParam(param)
+            
+            
             #print(self.dsi.Data[keys]['mdrc'].keys())
             if 'mdrc' in self.dsi.Data[keys]:
                 for rule in self.dsi.Data[keys]['mdrc']:
+                    self.build_dsrf_rule(self.dsi.Data[keys],rule)
                     if 'compare' in self.dsi.Data[keys]['mdrc'][rule]:
                         if 'simulator' in self.dsi.Data[keys]['mdrc'][rule]['compare']['control']:
-                            print(self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator'])
-                            print("making copy")
                             new_param = self.dsi.Data[keys].copy()
                             new_param.pop("mdrc")
                             new_param["control"]["simulator"] = self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
@@ -335,10 +358,11 @@ class DevSim:
                             new_key = keys + "_"  + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
                             #new_key = keys.split("__")[0] + "_" + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator'] + "__"  + keys.split("__")[1]
                             new_param["measure name"] = new_param["measure name"] + "_" + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
-                            print("new stuff")
-                            print(new_key)
-                            print(new_param)
+                            
                             self.dsi.AddParam(Parameter(config,self.techdata,new_param,new_key))
+            
+            
+            
 
 
             print("\n\n\n")
@@ -356,7 +380,8 @@ class DevSim:
             else:
                 pass
 #                jobs.append(Controller(param))
-
+        with open("test_dsrf.yml","w") as f:
+            	yaml.dump(self.dsrf_rules,f)
         jobids = []
         graphonly = None
         nosim = True
