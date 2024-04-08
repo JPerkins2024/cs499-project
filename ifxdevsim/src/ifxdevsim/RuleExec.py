@@ -4,15 +4,16 @@ class MDRC:
     def __init__(self):
         pass
                  
-    def EX_Compare(self, ruleID="-1", dvSim=None, DictLimit=None):
+    def EX_Compare(self, ruleID="-1", RuleMetric="", dvSim=None, DictLimit=None):
         #High Level outline: Perform calculation for limit and
         #evaluate that limit
-        arg1 = dvSim[0]
-        arg2 = dvSim[1]
-
+        arg1 = dvSim[0].param_data["definitions"][RuleMetric]
+        arg2 = dvSim[1].param_data["definitions"][RuleMetric]
+        Info = {"Parameter 1":dvSim[0].name,"Parameter 2":dvSim[1].name}
+        Info["Metric"] = RuleMetric
         limitResult = "pass"
         for k, v in DictLimit.items():
-            print(f"k:{k}\nv:{v}")
+            #print(f"k:{k}\nv:{v}")
             if (v[-1:] == '%'): 
                 #Percent difference case
                 v = v[:-1]
@@ -24,6 +25,8 @@ class MDRC:
                     result = (2 * abs(arg1 - arg2) / abs(abs(arg1) + abs(arg2)))
                 else:
                     result = 0
+
+                Info["Type"] = "Percentage"
                 #result = 2 * (arg1 - arg2) / (arg1 + arg2)
             elif( v[-1:] =='X' ): 
                 #Multiplier Case
@@ -36,9 +39,13 @@ class MDRC:
                 else: 
                     #Give Infinity to alert user. May be undesirable behavior
                     result = float('inf')
+
+                Info["Type"] = "Multiplier"
             else: 
                 #Absolute difference case
                 result = abs(arg1 - arg2)
+                
+                Info["Type"] = "AbsoluteDifferance"
 
 
             if result > float(v):
@@ -50,18 +57,22 @@ class MDRC:
                         limitResult = self.EX_Eval_Limits(limitResult, k)
                 else:
                     limitResult = self.EX_Eval_Limits(limitResult, k)
-        return  {"Compare": result,"limit": limitResult}
+        return  {"Compare": ruleID, "Comparison":result,"limit": limitResult, "info":Info}
 
-    def EX_Check(self, ruleID="-1", dvSim=None, DictLimit=None):
+    def EX_Check(self, ruleID="-1", RuleMetric="", dvSim=None, DictLimit=None):
+        Param = dvSim[0].param_data["definitions"][RuleMetric]
+        
+        Info = {"Parameter 1":dvSim[0].name}
+        Info["Metric"] = RuleMetric
         for limit, value in DictLimit.items():
             if "min" in limit:
                 minimum = value
             else:
                 maximum = value
         limitResult = "fail"
-        if dvSim > minimum and dvSim < maximum:
+        if Param > minimum and Param < maximum:
             limitResult = "pass"
-        return  {"check": dvSim, "limit": limitResult}
+        return  {"Compare": ruleID, "Comparison":Param,"limit": limitResult, "info":Info}
     
     def EX_Corner_Compare(self, ruleID="-1", ListPar=[], DictLimit=None):
         return  {"corner_compare":{},"string":["Korner Stuff","Otherstuff 3"],"limit":{}}

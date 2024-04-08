@@ -5,7 +5,8 @@ class ReportGenerator():
     
     def __init__(self):
         self.RulesExecuted = {}
-        self.Stages_Completed = []
+        self.StagesCompleted = []
+        self.AvailableTypes = ["pass", "fail","warning","note"]
         
 
     def AddRule(self, device="", rule ={}):
@@ -21,7 +22,7 @@ class ReportGenerator():
         if (stage == ""):
             print(f"Report error: '{stage}' is an Invalid stage")
         else:
-            self.Stages_Completed.append(stage)
+            self.StagesCompleted.append(stage)
 
     def getDevicesUsed(self):
         return list(self.RulesExecuted.keys())
@@ -34,75 +35,42 @@ class ReportGenerator():
 
         return sum
     
-    def getFailRules(self):
+    def getRulesType(self, Type=""):
         sum = []
 
-        for device in self.RulesExecuted.keys():
-            for rule in self.RulesExecuted[device]:
-                #print(rule)
-                if ("limit" in rule["Rule"].keys()):
-                    if rule["Rule"]["limit"] == "fail":
+        if (Type in self.AvailableTypes):
+            for device in self.RulesExecuted.keys():
+                for rule in self.RulesExecuted[device]:
+                    #print(rule)
+                    if ("limit" in rule["Rule"].keys()):
+                        if rule["Rule"]["limit"] == Type:
+                            sum.append(rule["Rule"])
+                    else:
+                        pass
+        elif (Type == "Invalid"):
+            for device in self.RulesExecuted.keys():
+                for rule in self.RulesExecuted[device]:
+                    #print(rule)
+                    if ("limit" in rule["Rule"].keys()):
+                        if (rule["Rule"]["limit"] not in (self.AvailableTypes)):
+                            sum.append(rule["Rule"])
+                    else:
                         sum.append(rule["Rule"])
-                else:
-                    print(f"invalid rule formmat")
-
-        return sum
-    
-    def getWarningRules(self):
-        sum = []
-
-        for device in self.RulesExecuted.keys():
-            for rule in self.RulesExecuted[device]:
-                #print(rule)
-                if ("limit" in rule["Rule"].keys()):
-                    if rule["Rule"]["limit"] == "warning":
-                        sum.append(rule["Rule"])
-                else:
-                    print(f"invalid rule formmat")
-
-        return sum
-    
-    def getNoteRules(self):
-        sum = []
-
-        for device in self.RulesExecuted.keys():
-            for rule in self.RulesExecuted[device]:
-                #print(rule)
-                if ("limit" in rule["Rule"].keys()):
-                    if rule["Rule"]["limit"] == "note":
-                        sum.append(rule["Rule"])
-                else:
-                    print(f"invalid rule formmat")
-
-        return sum
-    
-    def getPassRules(self):
-        sum = []
-
-        for device in self.RulesExecuted.keys():
-            for rule in self.RulesExecuted[device]:
-                #print(rule)
-                if ("limit" in rule["Rule"].keys()):
-                    if rule["Rule"]["limit"] == "pass":
-                        sum.append(rule["Rule"])
-                else:
-                    print(f"invalid rule formmat")
-
-        return sum
-    
-    def getInvalidRules(self):
-        sum = []
-
-        for device in self.RulesExecuted.keys():
-            for rule in self.RulesExecuted[device]:
-                #print(rule)
-                if ("limit" in rule["Rule"].keys()):
-                    if (rule["Rule"]["limit"] not in (["pass", "fail","warning","note"])):
-                        sum.append(rule["Rule"])
-                else:
+        elif (Type == "ALL"):
+            for device in self.RulesExecuted.keys():
+               for rule in self.RulesExecuted[device]:
                     sum.append(rule["Rule"])
+        else:
+            print(f"{Type} Invalid Option, you can search for:")
+            print("pass: All rules that passed")
+            print("fail: All rules that failed")
+            print("warning: All rules that recived a warning")
+            print("note: All rules that recived a note")
+            print("Invalid: All rules that have an invalid format (including errors)")
+            print("ALL: All rules that were executed")
 
         return sum
+        
     
     def printReport(self, title="mdrc.report.yaml"):
         if title == "":
@@ -111,14 +79,19 @@ class ReportGenerator():
         report = {}
         
         report["Devices_Tested"] = self.getDevicesUsed()
-        report["StagesExecuted"] = self.Stages_Completed
+        report["StagesExecuted"] = self.StagesCompleted
         
         report["Rule_Distribution"] = {}
-        report["Rule_Distribution"]["Pass"] = {"count":len(self.getPassRules()), "Rules":self.getPassRules()}
-        report["Rule_Distribution"]["Note"] ={"count":len(self.getNoteRules()), "Rules":self.getNoteRules()}
-        report["Rule_Distribution"]["Warning"] = {"count":len(self.getWarningRules()), "Rules":self.getWarningRules()}
-        report["Rule_Distribution"]["Fail"] = {"count":len(self.getFailRules()), "Rules":self.getFailRules()}
-        report["Rule_Distribution"]["Other"] = {"count":len(self.getInvalidRules()), "Rules":self.getInvalidRules()}
-        print(report)
+        hold = self.getRulesType(Type="pass")
+        report["Rule_Distribution"]["Pass"] = {"count":len(hold), "Rules":hold}
+        hold = self.getRulesType(Type="note")
+        report["Rule_Distribution"]["Note"] ={"count":len(hold), "Rules":hold}
+        hold = self.getRulesType(Type="warning")
+        report["Rule_Distribution"]["Warning"] = {"count":len(hold), "Rules":hold}
+        hold = self.getRulesType(Type="fail")
+        report["Rule_Distribution"]["Fail"] = {"count":len(hold), "Rules":hold}
+        hold = self.getRulesType(Type="Invalid")
+        report["Rule_Distribution"]["Other"] = {"count":len(hold), "Rules":hold}
+        #print(report)
         with open(("./" + title),'w') as out:
             yaml.dump(report, out)
