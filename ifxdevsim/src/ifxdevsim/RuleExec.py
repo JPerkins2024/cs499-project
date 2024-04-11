@@ -1,63 +1,56 @@
+import sys
 import yaml
 import re
 class MDRC:
     def __init__(self):
         pass
-                 
     def EX_Compare(self, ruleID="-1", RuleMetric="", dvSim=None, DictLimit=None):
-        #High Level outline: Perform calculation for limit and
-        #evaluate that limit
         arg1 = dvSim[0].param_data["definitions"][RuleMetric]
         arg2 = dvSim[1].param_data["definitions"][RuleMetric]
         Info = {"Parameter 1":dvSim[0].name,"Parameter 2":dvSim[1].name}
         Info["Metric"] = RuleMetric
-        limitResult = "pass"
-        for k, v in DictLimit.items():
-            #print(f"k:{k}\nv:{v}")
-            if (v[-1:] == '%'): 
-                #Percent difference case
-                v = v[:-1]
-                v = float(v) / 100.0
-                arg1 = float(arg1)
-                arg2 = float(arg2)
-                denom = abs(abs(arg1) + abs(arg2))
+
+        #Evaluate Limits
+        limitPriority = "pass"
+        for limitName, limitValType in DictLimit.items():
+            limitVal, compareResult, calcType = EX_Compare_Calc_Types(limitValType, arg1, arg2)
+            Info["Type"] = calcType
+            if compareResult > float(limitVal):
+                if str(limitName).isalpha() == True:
+                    if "fail" in limitName:
+                        limitPriority = limitName
+                        break
+                    else:
+                        limitPriority = EX_Eval_Limits(limitPriority, limitName)
+                else:
+                    limitPriority = EX_Eval_Limits(limitPriority, limitName)
+        return  {"Compare": ruleID, "Comparison":compareResult,"limit": limitPriority, "info":Info}
+
+    def EX_Compare_Calc_Types(limitValType, arg1, arg2):
+        calcTypeChar = limitValType[-1:]
+            if calcTypeChar == '%': #Percent difference case
+                limitValType = limitValType[:-1]
+                limitValType = float(limitValType) / 100.0
+                denom = abs(float(arg1)) + abs(float(arg2))
                 if denom != 0:
-                    result = (2 * abs(arg1 - arg2) / abs(abs(arg1) + abs(arg2)))
+                    result = (2 * abs(arg1 - arg2)) / (abs(arg1) + abs(arg2))
                 else:
                     result = 0
-
-                Info["Type"] = "Percentage"
-                #result = 2 * (arg1 - arg2) / (arg1 + arg2)
-            elif( v[-1:] =='X' ): 
-                #Multiplier Case
-                v = v[:-1]
-                v = float(v)
+                calcType = "Percentage"
+            elif calcTypeChar == 'X': #Multiplier Case
+                limitValType = limitValType[:-1]
                 arg1 = float(arg1)
                 arg2 = float(arg2)
                 if arg2 != 0:
                     result = arg1 / arg2
                 else: 
-                    #Give Infinity to alert user. May be undesirable behavior
+                    #Divide by Zero. Give Infinity to alert user. 
                     result = float('inf')
-
-                Info["Type"] = "Multiplier"
-            else: 
-                #Absolute difference case
-                result = abs(arg1 - arg2)
-                
-                Info["Type"] = "AbsoluteDifferance"
-
-
-            if result > float(v):
-                if str(k).isalpha() == True:
-                    if "fail" in k:
-                        limitResult = k
-                        break
-                    else:
-                        limitResult = self.EX_Eval_Limits(limitResult, k)
-                else:
-                    limitResult = self.EX_Eval_Limits(limitResult, k)
-        return  {"Compare": ruleID, "Comparison":result,"limit": limitResult, "info":Info}
+                calcType = "Multiplier"
+            else: #Absolute difference case
+                result = abs(arg1 - arg2)	
+                calcType = "AbsoluteDifferance"
+        return limitValType, result, calcType
 
     def EX_Check(self, ruleID="-1", RuleMetric="", dvSim=None, DictLimit=None):
         Param = dvSim[0].param_data["definitions"][RuleMetric]
@@ -76,61 +69,76 @@ class MDRC:
     
     def EX_Corner_Compare(self, ruleID="-1", ListPar=[], DictLimit=None):
         return  {"corner_compare":{},"string":["Korner Stuff","Otherstuff 3"],"limit":{}}
+    def EX_Corner_Compare(ruleID="-1", dvSim=None, DictLimit=None):
+        #dvSim on my end takes in parameters in the following form
+        #dvSim = {cornerName1: cornerVal1, cornerName2: cornerVal2}
+        cornerList = list(dvSim.items())
+        cornerListLength = len(cornerList)
+        corners = ["",""]
+        maxResult = float('-inf')
 
-    def EX_Get_Sim_Val(self, dsoDict, simName, corner="top_tt"):
-        simulation = dsoDict.get(simName)
-        simData = simulation.get("simulations")
-        value = simData.get(corner)
-        result = value.get("nominal")
-        return result
+        
+        #Evaluate limits and perform calculations
+        limitResult = "pass"
+        for i in range(0, cornerListLength):
+            arg1 = cornerList[i][1]
+            for j in range(0, cornerListLength):
+                arg2 = cornerList[j][1]
+                #Iterate through all corners given
 
-    def EX_Eval_Limits(self, oldLimit, newLimit):
+                for limitName, limitValType in DictLimit.items():
+                    limitVal, compareResult, calcType = EX_Compare_Calc_Types(limitValType, arg1, arg2)
+                    if compareResult > float(limitVal):
+                            maxResult = max(maxResult, compareResult)
+                            if compareResult == maxResult:
+                                corners = [cornerList[i][0], cornerList[j][0]]
+                            if str(limitName).isalpha() == True:
+                                if "fail" in limitName:
+                                    limitResult = limitName
+                                    break
+                                else:
+                                    limitResult = EX_Eval_Limits(limitResult, limitName)
+                            else:
+                                limitResult = EX_Eval_Limits(limitResult, limitName)
+        return  {Corner_Compare": ruleID, Corner_Comparison": maxResult,"Corners": corners, "limit": limitResult}
+
+    def EX_Eval_Limits(oldLimit, newLimit):
         if str(oldLimit).isalpha() == True:
+            oldLimit = oldLimit.lower()
             if str(newLimit).isalpha() == True:    
-                if "fail" in oldLimit or "fail" in "newLimit":
+                newLimit = newLimit.lower()
+                if ("fail" in oldLimit) or ("fail" in newLimit):
                     return "fail"
                 elif "warning" in oldLimit or "warning" in newLimit:
                     return "warning"
-                else:
+                elif "note" in  oldLimit or "note" in newLimit:
                     return "note"
+                else:
+                    return "pass"
             else:
-                if "fail" not in oldLimit:
-                    newLimitNum = float(newLimit)
-                    if newLimitNum > 0:
-                        return newLimit
-                    elif "warning" in oldLimit:
-                        return oldLimit
-                    elif newLimitNum == 0:
-                        return newLimit
-                    elif "pass" in oldLimit:
-                        return newLimit
-                    else: 
-                        return oldLimit
+                return EX_Eval_Limits_Mixed_Types(newLimit, oldLimit)
         else:
             if str(newLimit).isalpha() == True:
-                if "fail" not in newLimit:
-                    oldLimitNum = float(oldLimit)
-                    if oldLimitNum > 0:
-                        return oldLimit
-                    elif "warning" in newLimit:
-                        return oldLimit
-                    elif oldLimitNum == 0:
-                        return oldLimit
-                    else: 
-                        return newLimit
+                return EX_Eval_Limits_Mixed_Types(oldLimit, newLimit)
             else:
                 if float(oldLimit) > float(newLimit):
                     return oldLimit
                 else:
                     return newLimit
+    def EX_Eval_Limits_Mixed_Types(floatLimit, stringLimit):
+        stringLimit = stringLimit.lower()
+        if "fail" not in stringLimit:
+            floatLimitNum = float(floatLimit)
+            if floatLimitNum > 0:
+                return floatLimit
+            elif "warning" in stringLimit:
+                return stringLimit
+            elif floatLimitNum == 0:
+                return floatLimit
+            elif "pass" in stringLimit:
+                return floatLimit
+            else: 
+                return stringLimit
+        else:
+            return stringLimit
 
-    def Dictionary_Read(path):
-        #read in a yaml file as a dict
-        with open(("./"+path),'r') as f:
-            d = yaml.safe_load(f.read())
-        return d
-
-    def Dictionary_Dump(path, DictUsed):
-        with open(path,'w') as out:
-            yaml.dump(DictUsed, out, explicit_start=True)
-    
