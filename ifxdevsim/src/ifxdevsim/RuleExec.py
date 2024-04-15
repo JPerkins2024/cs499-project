@@ -11,13 +11,9 @@ class MDRC:
 
         args = self.Locate_Metric(params=dvSim, metric=RuleMetric)
         
-        if isinstance(args[0], dict):
+        if (args != None and isinstance(args[0], dict)):
             #turn simulation data into floats
-            temp = []
-            for param in args:
-                for key in param.keys():
-                    temp.append(param[key])
-            args = temp.copy()
+            args = self.DictToFloat(args)
 
         if (2 != len(dvSim)):
             return {"ID":ruleID,"ERROR":f"Comparison error: 2 parameters requested {len(dvSim)} provided", "info":Info}
@@ -80,12 +76,8 @@ class MDRC:
         args = self.Locate_Metric(params=dvSim, metric=RuleMetric)
 
 
-        if isinstance(args[0], dict):
-            temp = []
-            for param in args:
-                for key in param.keys():
-                    temp.append(param[key])
-            args = temp.copy()
+        if args != None and isinstance(args[0], dict):
+            args = self.DictToFloat(args)
 
         if (1 != len(dvSim)):
             return {"ID":ruleID,"ERROR":f"Comparison error: 1 parameter requested {len(dvSim)} provided", "info":Info}
@@ -229,7 +221,7 @@ class MDRC:
                 }
             ]
             '''
-            return CornerValues#.copy()
+            return CornerValues.copy()
         elif metric not in params[0].param_data.keys():
             for section in params[0].param_data.keys():
                 if( type(params[0].param_data[section]) == dict):
@@ -240,3 +232,16 @@ class MDRC:
                                 temp.append(param.param_data[section][posibleMetric])
                             return temp
         return None
+
+    def DictToFloat(self, dictArr=[]):
+        temp = []
+        for param in dictArr:
+            temp2 = []
+            for key in param.keys():
+                temp2.append(param[key])
+            temp.append(temp2.copy())
+        for arrayIdx in range(len(temp)):
+            if len(temp[arrayIdx]) == 1:
+                temp[arrayIdx] = temp[arrayIdx][0]
+        
+        return temp.copy()

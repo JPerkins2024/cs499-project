@@ -456,7 +456,7 @@ class DevSim:
             for x in p:
                 ParamMap[x.measure_name] = x
         
-        hackMetric = "vmin"
+        #hackMetric = "idsat"
         executor = Exec()
 
         for Crule in (self.dsrf_rules["rules"]):
@@ -468,11 +468,11 @@ class DevSim:
                 ParamMap[Param_device[0]].param_data["mdrc"][Crule["rule number"]]["MDRC_Execution"] = []
 
             if (Crule['rule'] == "compare"):
-                RuleOut = executor.EX_Compare(ruleID=Crule["rule number"], RuleMetric=hackMetric, dvSim=[ParamMap[Param_device[0]],ParamMap[Param_device[1]]], DictLimit=Crule["limit"])
+                RuleOut = executor.EX_Compare(ruleID=Crule["rule number"], RuleMetric=Crule["metrics"], dvSim=[ParamMap[Param_device[0]],ParamMap[Param_device[1]]], DictLimit=Crule["limit"])
             elif (Crule['rule'] == "check"):
-                    RuleOut = executor.EX_Check(ruleID=Crule['rule number'], RuleMetric=hackMetric, dvSim=[ParamMap[Param_device[0]]], DictLimit=Crule['limit'])
+                    RuleOut = executor.EX_Check(ruleID=Crule['rule number'], RuleMetric=Crule["metrics"], dvSim=[ParamMap[Param_device[0]]], DictLimit=Crule['limit'])
             elif (Crule['rule'] == "corner_compare"):
-                RuleOut = executor.EX_Corner_Compare(ruleID=Crule['rule number'], dvSim=[ParamMap[Param_device[0]],ParamMap[Param_device[1]]], DictLimit=Crule['limit'],RuleMetric=hackMetric)
+                RuleOut = executor.EX_Corner_Compare(ruleID=Crule['rule number'], dvSim=[ParamMap[Param_device[0]],ParamMap[Param_device[1]]], DictLimit=Crule['limit'],RuleMetric=Crule["metrics"])
             else:
                 #logger.error(f"Error in rule [{(Crule['rule number'])}], rule action not found") 
                 RuleOut = {"ID":Crule['rule number'],"ERROR":f"Error at [{Crule['rule number']}], with rule action [{ str(Crule['rule'])}] , device [{ Param_device[0] }]"}   
