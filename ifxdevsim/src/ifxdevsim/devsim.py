@@ -208,10 +208,6 @@ class DevSim:
         self.techdata = None
         self.dsi_file = args.input
         try:
-            self.dsrf_file = args.input.split(".")[0] + ".dsrf.yml"
-        except:
-            self.dsrf_file = "output.dsrf.yml"
-        try:
             tf = open(self.techfile)
             logger.info("Techfile found.")
             self.techdata = yaml.load(tf)
@@ -322,7 +318,7 @@ class DevSim:
                 logger.info(f"Running {command}")
                 subprocess.run(command,shell=True)
             exit()
-
+        
         self.dsrf_rules = {'rules':[]}
 
     def build_dsrf_rule(self,param_object,rule_number):
@@ -332,20 +328,21 @@ class DevSim:
         if 'compare' in param_object['mdrc'][rule_number]:
             new_rule['rule'] = 'compare'
             new_rule['rule number'] = rule_number
+            new_rule['device simulations'] = []
             if 'metrics' in param_object:
                 new_rule['metrics'] = param_object['metrics']
             else:
                 new_rule['metrics'] = None
-            new_rule['device simulations'] = []
             new_rule['device simulations'].append(param_object['measure name'])
             new_rule['device simulations'].append(param_object['measure name'] + "_" + param_object['mdrc'][rule_number]['compare']['control']['simulator'])
             new_rule['string'] = param_object['mdrc'][rule_number]['string']
             new_rule['limit'] = param_object['mdrc'][rule_number]['limit']
             self.dsrf_rules['rules'].append(new_rule)	
+    	
         #case for limit check rule
         if 'check' in param_object['mdrc'][rule_number]:
-            #only write check instruction if check rule checks for metric simulated by this param object
-            if param_object['mdrc'][rule_number]['check']['metrics'] == param_object['metrics']:
+    	    #only write check instruction if check rule checks for metric simulated by this param object
+    	    if param_object['mdrc'][rule_number]['check']['metrics'] == param_object['metrics']:
                 new_rule['rule'] = 'check'
                 new_rule['rule number'] = rule_number
                 new_rule['device simulations'] = []
@@ -357,23 +354,21 @@ class DevSim:
                 new_rule['string'] = param_object['mdrc'][rule_number]['string']
                 new_rule['limit'] = param_object['mdrc'][rule_number]['limit']
                 self.dsrf_rules['rules'].append(new_rule)
-        
-        self.dsrf_rules = {'rules':[]}
 
     def main(self):
         jobs = []
         logger = Logger(printSummary=False, logLevel="INFO")
         report = RGen()
 
-        overwrite_dsrf = False
+        overwrite_dsrf = True
 
         report.AddStage("DSI Parameterization")
         for keys in self.dsi.Data:
             if not self.dsi.Data[keys]:
                 continue
+            self.dsi.Data[keys]['simulations'] = {"top_tt":{"nominal":12.34}}
             param = Parameter(config, self.techdata, self.dsi.Data[keys], keys)
             self.dsi.AddParam(param)
-            
             
             #print(self.dsi.Data[keys]['mdrc'].keys())
             if 'mdrc' in self.dsi.Data[keys]:
@@ -388,21 +383,12 @@ class DevSim:
                             new_key = keys + "_"  + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
                             #new_key = keys.split("__")[0] + "_" + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator'] + "__"  + keys.split("__")[1]
                             new_param["measure name"] = new_param["measure name"] + "_" + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
-
-                            
-                            self.dsi.AddParam(Parameter(config,self.techdata,new_param,new_key))
-            
-            
-            
-
-
-            bucket_idx = None
              
             
                             try:
                                 self.dsi.AddParam(Parameter(config,self.techdata,new_param,new_key))
                             except Exception as e:
-                                print(f"woopsie {e}\n K:{new_key}, \n P: {new_param}")
+                                logger.fatal(f"Parameter Creation ERROR (MDRC) {e}\n Key value:{new_key}, \n Param: {new_param}")
                                 continue
             
             
@@ -420,10 +406,6 @@ class DevSim:
                 jobs[bucket_idx].add_param(param)
             else:
                 pass
-#                jobs.append(Controller(param))
-        if self.dsrf_rules['rules'] != []:
-            with open(self.dsrf_file,"w") as f:
-                yaml.dump(self.dsrf_rules,f)
                 #jobs.append(Controller(param))
 
 
@@ -474,7 +456,7 @@ class DevSim:
             for x in p:
                 ParamMap[x.measure_name] = x
         
-        hackMetric = "vtlin"
+        hackMetric = "vmin"
         executor = Exec()
 
         for Crule in (self.dsrf_rules["rules"]):

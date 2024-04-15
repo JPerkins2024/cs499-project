@@ -10,6 +10,14 @@ class MDRC:
         Info["Metric"] = RuleMetric
 
         args = self.Locate_Metric(params=dvSim, metric=RuleMetric)
+        
+        if isinstance(args[0], dict):
+            #turn simulation data into floats
+            temp = []
+            for param in args:
+                for key in param.keys():
+                    temp.append(param[key])
+            args = temp.copy()
 
         if (2 != len(dvSim)):
             return {"ID":ruleID,"ERROR":f"Comparison error: 2 parameters requested {len(dvSim)} provided", "info":Info}
@@ -17,9 +25,10 @@ class MDRC:
             return {"ID":ruleID,"ERROR":f"Comparison error: 2 parameter metrics expected, found {len(args) if args != None else  0} total", "info":Info}
         
         for arg in args:
-            if (type(arg) not in ["int","float","complex"]):
+            if (not isinstance(arg, float)):
                 return {"ID":ruleID,"ERROR":f"Comparison error: float metric expected, found {type(arg)}", "info":Info}
         
+
         arg1 = args[0]#dvSim[0].param_data["definitions"][RuleMetric]
         arg2 = args[1]#dvSim[1].param_data["definitions"][RuleMetric]
 
@@ -70,13 +79,21 @@ class MDRC:
         Info["Metric"] = RuleMetric
         args = self.Locate_Metric(params=dvSim, metric=RuleMetric)
 
+
+        if isinstance(args[0], dict):
+            temp = []
+            for param in args:
+                for key in param.keys():
+                    temp.append(param[key])
+            args = temp.copy()
+
         if (1 != len(dvSim)):
             return {"ID":ruleID,"ERROR":f"Comparison error: 1 parameter requested {len(dvSim)} provided", "info":Info}
         if (args == None) or (len(args) !=  len(dvSim)):
             return {"ID":ruleID,"ERROR":f"Comparison error: 1 parameter metric expected, found {len(args) if args != None else  0} total", "info":Info}
         
         for arg in args:
-            if (type(arg) not in ["int","float","complex"]):
+            if (not isinstance(arg, float)):
                 return {"ID":ruleID,"ERROR":f"Comparison error: float metric expected, found {type(arg)}", "info":Info}
         
         arg1 = args[0]
@@ -185,24 +202,33 @@ class MDRC:
         
     def Locate_Metric(self, params=[], metric=""):
         if (metric=="" or (not metric.isalpha())):
-            raise KeyError(f"Metric '{metric}' not found")
+            raise KeyError(f"Metric '{metric}' format error")
 
         if metric == params[0].param_data["metrics"]: 
+            
             CornerValues = []
-            #for parameter in params:
-            #    CornerValues.append(parameter.param_data["simulations"])
+            for parameter in params:
+                temp = {}
+                #CornerValues.append(parameter.param_data["simulations"])
+                for CornerLabel in parameter.param_data["simulations"].keys():
+                    temp[CornerLabel] =  parameter.param_data["simulations"][CornerLabel]["nominal"] 
+
+                CornerValues.append(temp)
+            '''
             CornerValues = [
                 {
                 "top_tt": 47.5,
                 "top_ff": 39.86000000000001,
                 "top_ss": 57.49
                 },
+                
                 {
                 "top_tt": 57.42000000000001,
                 "top_ff": 48.18000000000001,
                 "top_ss": 69.5
                 }
             ]
+            '''
             return CornerValues#.copy()
         elif metric not in params[0].param_data.keys():
             for section in params[0].param_data.keys():
@@ -214,4 +240,3 @@ class MDRC:
                                 temp.append(param.param_data[section][posibleMetric])
                             return temp
         return None
-
