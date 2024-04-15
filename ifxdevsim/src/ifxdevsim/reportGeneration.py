@@ -1,4 +1,4 @@
-import time
+import datetime
 import yaml
 
 class ReportGenerator():
@@ -14,9 +14,9 @@ class ReportGenerator():
             print(f"Bad Format")
         else:
             if(device not in self.RulesExecuted.keys()):
-                self.RulesExecuted[device] = [{"Time":time.time(), "Rule":rule}]
+                self.RulesExecuted[device] = [{"Time":datetime.datetime.now(), "Rule":rule}]
             else:
-                self.RulesExecuted[device].append({"Time":time.time(), "Rule":rule})
+                self.RulesExecuted[device].append({"Time":datetime.datetime.now(), "Rule":rule})
 
     def AddStage(self, stage=""):
         if (stage == ""):
@@ -34,7 +34,18 @@ class ReportGenerator():
             sum = len(self.RulesExecuted[device]) + sum
 
         return sum
-    
+    def getRulesofDevice(self, Device=""):
+        if (Device not in self.RulesExecuted.keys()):
+            return []
+        
+        sum = []
+        for rule in self.RulesExecuted[Device]:
+            sum.append(rule)
+        
+        return sum
+
+
+
     def getRulesType(self, Type=""):
         sum = []
 
@@ -70,7 +81,13 @@ class ReportGenerator():
             print("ALL: All rules that were executed")
 
         return sum
-        
+
+    def getRuleTimeline(self):
+        sum = []
+        for device in self.RulesExecuted.keys():    
+                for rule in self.RulesExecuted[device]:
+                    sum.append({"Device":device, "Rule":rule["Rule"]["ID"], "Time":rule["Time"]})
+        return sum
     
     def printReport(self, title="mdrc.report.yaml"):
         if title == "":
@@ -92,6 +109,8 @@ class ReportGenerator():
         report["Rule_Distribution"]["Fail"] = {"count":len(hold), "Rules":hold}
         hold = self.getRulesType(Type="Invalid")
         report["Rule_Distribution"]["Other"] = {"count":len(hold), "Rules":hold}
+        hold = self.getRuleTimeline()
+        report["Timeline"] = hold
         #print(report)
         with open(("./" + title),'w') as out:
             yaml.dump(report, out)
