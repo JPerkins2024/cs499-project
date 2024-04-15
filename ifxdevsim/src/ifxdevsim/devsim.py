@@ -18,7 +18,9 @@ from .views.view_funcs import print_valid_views, print_config, get_pdf_outputs
 import subprocess
 from .metrics.mdm_parser import print_valid_routines
 from .utils import set_scale
-
+import re
+from .RuleExec import MDRC as Exec
+from .reportGeneration import ReportGenerator as RGen
 
 class DevSim:
     # Update: this actually works now, simply printing
@@ -193,6 +195,15 @@ class DevSim:
             logger.warning(
                 "No techfile specified.  Either specify a techfile with -tf or write the path to it in ./.techfile"
             )
+            
+        try:
+            self.dsrf_file = args.input.split(".")[0] + ".dsrf.yml"
+        except:
+            self.dsrf_file = "output.dsrf.yml"
+        try:
+            self.dsr_file = args.input.split(".")[0] + ".dsr.yml"
+        except:
+            self.dsr_file = "output.dsr.yml"
 
         self.techdata = None
         self.dsi_file = args.input
@@ -311,6 +322,7 @@ class DevSim:
                 logger.info(f"Running {command}")
                 subprocess.run(command,shell=True)
             exit()
+
         self.dsrf_rules = {'rules':[]}
 
     def build_dsrf_rule(self,param_object,rule_number):
@@ -345,11 +357,17 @@ class DevSim:
                 new_rule['string'] = param_object['mdrc'][rule_number]['string']
                 new_rule['limit'] = param_object['mdrc'][rule_number]['limit']
                 self.dsrf_rules['rules'].append(new_rule)
-
+        
+        self.dsrf_rules = {'rules':[]}
 
     def main(self):
         jobs = []
         logger = Logger(printSummary=False, logLevel="INFO")
+        report = RGen()
+
+        overwrite_dsrf = False
+
+        report.AddStage("DSI Parameterization")
         for keys in self.dsi.Data:
             if not self.dsi.Data[keys]:
                 continue
@@ -370,6 +388,7 @@ class DevSim:
                             new_key = keys + "_"  + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
                             #new_key = keys.split("__")[0] + "_" + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator'] + "__"  + keys.split("__")[1]
                             new_param["measure name"] = new_param["measure name"] + "_" + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
+
                             
                             self.dsi.AddParam(Parameter(config,self.techdata,new_param,new_key))
             
@@ -378,6 +397,17 @@ class DevSim:
 
 
             bucket_idx = None
+             
+            
+                            try:
+                                self.dsi.AddParam(Parameter(config,self.techdata,new_param,new_key))
+                            except Exception as e:
+                                print(f"woopsie {e}\n K:{new_key}, \n P: {new_param}")
+                                continue
+            
+            
+            bucket_idx = None
+        
             for i, bucket in enumerate(jobs):
                 if not bucket.control == param.param_data["control"]:
                     continue
@@ -394,6 +424,27 @@ class DevSim:
         if self.dsrf_rules['rules'] != []:
             with open(self.dsrf_file,"w") as f:
                 yaml.dump(self.dsrf_rules,f)
+                #jobs.append(Controller(param))
+
+
+        report.AddStage("MDRC Generator")
+        if not overwrite_dsrf:
+            try:
+                with open(self.dsrf_file,"r") as f:
+                    self.dsrf_rules = yaml.load(f)
+                    #yaml.dump(self.dsrf_rules,f)
+            except Exception as e:
+                logger.error(f"dsrf file '{self.dsr_file}' does not exist")
+                logger.warning(f"creating a new dsrf file")
+                overwrite_dsrf = True
+        if overwrite_dsrf:   
+            if self.dsrf_rules['rules'] != []:
+                with open(self.dsrf_file,"w") as f:
+                    yaml.dump(self.dsrf_rules,f)
+                    
+
+        report.AddStage("Simulation Enviorment")
+
         jobids = []
         graphonly = None
         nosim = True
@@ -412,6 +463,49 @@ class DevSim:
         for job in jobs:
             job.parse()
 
+
+        report.AddStage("MDRC Execution")
+        #Execute model
+
+        #Create a map to execute rules faster
+        ParamMap = {}
+        for idx in range(len(self.dsi.Params)):
+            p = self.dsi.Params[idx]
+            for x in p:
+                ParamMap[x.measure_name] = x
+        
+        hackMetric = "vtlin"
+        executor = Exec()
+
+        for Crule in (self.dsrf_rules["rules"]):
+            Param_device = Crule["device simulations"]
+            RuleOut = None
+            logger.info(f"Runing {Crule['rule']} for {Param_device[0]} ({Crule['rule number']})")
+    
+            if ("MDRC_Execution" not in ParamMap[Param_device[0]].param_data["mdrc"][Crule["rule number"]].keys()):
+                ParamMap[Param_device[0]].param_data["mdrc"][Crule["rule number"]]["MDRC_Execution"] = []
+
+            if (Crule['rule'] == "compare"):
+                RuleOut = executor.EX_Compare(ruleID=Crule["rule number"], RuleMetric=hackMetric, dvSim=[ParamMap[Param_device[0]],ParamMap[Param_device[1]]], DictLimit=Crule["limit"])
+            elif (Crule['rule'] == "check"):
+                    RuleOut = executor.EX_Check(ruleID=Crule['rule number'], RuleMetric=hackMetric, dvSim=[ParamMap[Param_device[0]]], DictLimit=Crule['limit'])
+            elif (Crule['rule'] == "corner_compare"):
+                RuleOut = executor.EX_Corner_Compare(ruleID=Crule['rule number'], dvSim=[ParamMap[Param_device[0]],ParamMap[Param_device[1]]], DictLimit=Crule['limit'],RuleMetric=hackMetric)
+            else:
+                #logger.error(f"Error in rule [{(Crule['rule number'])}], rule action not found") 
+                RuleOut = {"ID":Crule['rule number'],"ERROR":f"Error at [{Crule['rule number']}], with rule action [{ str(Crule['rule'])}] , device [{ Param_device[0] }]"}   
+            
+            if RuleOut == None:
+                RuleOut = {"ID":Crule['rule number'],"ERROR":f"Error at [{ str(Crule['rule number']) }] , with device [{ Param_device[0] }]"}
+            #This printout cpmditon is not needed in the current implementation, 
+            #but can be included if additional errors are produced not documented by the UKY team
+            if( 'ERROR' in RuleOut.keys()):
+                logger.error(f"Error in rule {RuleOut['ID']} produced:'{RuleOut['ERROR']}'")   
+            
+            ParamMap[Param_device[0]].param_data["mdrc"][Crule["rule number"]]["MDRC_Execution"].append(RuleOut)
+            report.AddRule(device=ParamMap[Param_device[0]].device,rule=RuleOut.copy())
+        
+        report.AddStage("DSO Output File Generation")
         self.dsi.print()
         self.dsi.create_views()
         if self.pdfout:
@@ -420,11 +514,11 @@ class DevSim:
             logger.info(f"Combining all generated pdfs into {self.pdfout}")
             logger.info(f"Running {command}")
             subprocess.run(command,shell=True)
+        report.AddStage("MDRC Report Generation")
+        report.printReport(self.dsr_file)
+        
 
-    # For future modules, the args.<whatever> is just the
-    # full name of the <whatever> argument.
-
-
+        
 if __name__ == "__main__":
     dev = DevSim()
     dev.main()
