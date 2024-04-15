@@ -23,14 +23,14 @@ nhv__2:
     tprint: 1n
     tstop: 1u
     load balancer: bsub
-    simulator: spectre
+    simulator: hspice
     models path: /opt/pre-release/pub/tech5/mxs8/v0.1.0/spectre/models/toplevel.scs
     corners: top_tt
     step size: 0.01
     temperature: 25
     mode: normal
-    language: spectre
-  _fname: mxs8.dsi.yml
+    language: spice
+  _fname: bugfix.dsi.yml
   _dirname: ''
   device: nhv
   instance parameters:
@@ -70,14 +70,14 @@ nhv__1:
     tprint: 1n
     tstop: 1u
     load balancer: bsub
-    simulator: spectre
+    simulator: hspice
     models path: /opt/pre-release/pub/tech5/mxs8/v0.1.0/spectre/models/toplevel.scs
     corners: top_tt
     step size: 0.01
     temperature: 25
     mode: normal
-    language: spectre
-  _fname: mxs8.dsi.yml
+    language: spice
+  _fname: bugfix.dsi.yml
   _dirname: ''
   device: nhv
   instance parameters:
@@ -117,14 +117,14 @@ nhv__0:
     tprint: 1n
     tstop: 1u
     load balancer: bsub
-    simulator: spectre
+    simulator: hspice
     models path: /opt/pre-release/pub/tech5/mxs8/v0.1.0/spectre/models/toplevel.scs
     corners: top_tt
     step size: 0.01
     temperature: 25
     mode: normal
-    language: spectre
-  _fname: mxs8.dsi.yml
+    language: spice
+  _fname: bugfix.dsi.yml
   _dirname: ''
   device: nhv
   instance parameters:

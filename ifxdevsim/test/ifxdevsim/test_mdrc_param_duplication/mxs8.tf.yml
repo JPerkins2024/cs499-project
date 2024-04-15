@@ -1,0 +1,160 @@
+---
+metrics:
+  cgg:
+    definitions:
+      analysis_type: cgg
+  cggi:
+    definitions:
+      analysis_type: cgg
+    stimuli:
+      vg: vgg
+  idsat:
+    definitions:
+      analysis_type: id
+    stimuli:
+      vb: 0
+      vd: vdd
+      vg: vgg
+  resistance:
+    definitions:
+      analysis_type: rrs
+    stimuli:
+      vr: 1
+  vtlin:
+    definitions:
+      analysis_type: vtc
+    stimuli:
+      vb: 0
+      vd: vdlin
+      vg: vgg
+nhv:
+  definitions:
+    cc: 100n
+    device_type: nmos4t
+    frequency: 1.0e5
+    itar: cc * w / l
+    lmin: 0.5
+    scale_area: w*l*m*scale*scale
+    scale_w_perim: 2*(w+l)*m*scale
+    vbb: -2.5
+    vdd: 5
+    vdlin: 0.1
+    vgg: 5
+    wmin: 0.5
+  instance parameters:
+    l: lmin
+    w: wmin
+  metrics:
+  - idsat
+  - vtlin
+  - cggi
+nshort:
+  definitions:
+    cc: 100n
+    device_type: nmos4t
+    frequency: 1.0e5
+    itar: cc * w / l
+    lmin: 0.16
+    scale_area: w*l*m*scale*scale
+    scale_w_perim: 2*(w+l)*m*scale
+    vbb: -0.9
+    vdd: 1.8
+    vdlin: 0.05
+    vgg: 1.8
+    wmin: 0.22
+  instance parameters:
+    l: lmin
+    w: wmin
+  metrics:
+  - idsat
+  - vtlin
+  - cggi
+pshort:
+  definitions:
+    cc: 100n
+    device_type: pmos4t
+    frequency: 1.0e5
+    itar: cc * w / l
+    lmin: 0.16
+    scale_area: w*l*m*scale*scale
+    scale_w_perim: 2*(w+l)*m*scale
+    vbb: -0.9
+    vdd: 1.8
+    vdlin: 0.05
+    vgg: 1.8
+    wmin: 0.22
+  instance parameters:
+    l: lmin
+    w: wmin
+  metrics:
+  - idsat
+  - vtlin
+  - cggi
+mrp1_3t:
+  definitions:
+    cc: 100u
+    device_type: res3t
+    frequency: 1.0e5
+    square: l/(w*simM)
+  instance parameters:
+    l: 1u
+    w: 1u
+  metrics:
+  - resistance
+cnvac:
+  definitions:
+    device_type: nmos2t
+    frequency: 1.0e5
+    vdd: 1.8
+  instance parameters:
+    l: 5
+    w: 5
+  metrics:
+  - cgg
+mdrc:
+  1:
+    string: 'Device comparisons'
+    a:
+      string: 'Indentical devices'
+      limit:
+        fail: 1%
+    b:
+      string: 'Similar devices'
+      limit:
+        fail: 5%
+  2:
+    string: 'Simulator checks'
+    limit:
+      note: 0.1%
+      fail: 1%
+    a:  
+      compare:
+        control: titan
+      string: 'Titan'
+    b:  
+      compare:
+        control: hspice
+      string: 'Hspice'
+  3:
+    type: compare
+    string: 'Metric comparison'
+  4:
+    string: 'Verify a metric is within limits'
+  5:
+    type: corner_compare
+    string: 'Check corner behavior'
+    a:
+      string: 'Corner crossing'
+    b:
+      string: 'Corner window'
+    c:
+      string: 'TBD: somehow check TT+X*sigma vs FF/SS'
+tech: mxs8
+techdata:
+  control:
+    simulator: spectre
+    #model paths: /opt/pre-release/pub/tech5/mxs8/v0.1.0/spectre/models/toplevel.scs
+  corners:
+    typical: top_tt
+  definitions:
+    scale: 1e-6

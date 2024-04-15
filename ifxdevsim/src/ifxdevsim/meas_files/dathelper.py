@@ -13,7 +13,7 @@ import ruamel.yaml
 yaml=ruamel.yaml.YAML()
 import socket
 from copy import copy, deepcopy
-from ifxpyproplusdat import ProPlusDat as Dat
+#from ifxpyproplusdat import ProPlusDat as Dat
 from ..utils import listfiles, is_number, get_site, to_number, make_sweep_dict,scale_param
 import fnmatch
 from ..metrics import DatParser

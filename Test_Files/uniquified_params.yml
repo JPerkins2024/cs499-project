@@ -1,0 +1,52 @@
+h1__nhv__0:
+  _dirname: ''
+  _fname: mdrc.dsi.yml
+  control: {corners: top_tt, load balancer: bsub, models path: /opt/pre-release/pub/tech5/mxs8/v0.1.0/spectre/models/toplevel.scs,
+    simulator: spectre, tprint: 1n, tstop: 1u}
+  definitions: {frequency: '1e5', itar: 1e-07, reverse sweep: false, scale: 1e-06,
+    vmax: 2.0, vmin: -0.5}
+  device: nhv
+  instance parameters: {l: lmin, w: wmin}
+  mdrc:
+    2a:
+      compare:
+        control: {simulator: titan}
+      limit: {fail: 1%, note: 0.1%}
+      string: {s1: Simulator  checks, s2: Titan}
+    2b:
+      compare:
+        control: {simulator: hspice}
+      limit: {fail: 1%, note: 0.1%}
+      string: {s1: Simulator  checks, s2: Hspice}
+    4:
+      check: {metrics: idsat}
+      limit: {max: 1000, min: 500}
+      string: {s1: Verify a metric is within limits, s2: IDSAT}
+  measure name: h1__nhv__0
+  metrics: idsat
+h1__nhv__1:
+  _dirname: ''
+  _fname: mdrc.dsi.yml
+  control: {corners: top_tt, load balancer: bsub, models path: /opt/pre-release/pub/tech5/mxs8/v0.1.0/spectre/models/toplevel.scs,
+    simulator: spectre, tprint: 1n, tstop: 1u}
+  definitions: {frequency: '1e5', itar: 1e-07, reverse sweep: false, scale: 1e-06,
+    vmax: 2.0, vmin: -0.5}
+  device: nhv
+  instance parameters: {l: lmin, w: wmin}
+  mdrc:
+    2a:
+      compare:
+        control: {simulator: titan}
+      limit: {fail: 1%, note: 0.1%}
+      string: {s1: Simulator  checks, s2: Titan}
+    2b:
+      compare:
+        control: {simulator: hspice}
+      limit: {fail: 1%, note: 0.1%}
+      string: {s1: Simulator  checks, s2: Hspice}
+    4:
+      check: {metrics: idsat}
+      limit: {max: 1000, min: 500}
+      string: {s1: Verify a metric is within limits, s2: IDSAT}
+  measure name: h1__nhv__1
+  metrics: vtlin

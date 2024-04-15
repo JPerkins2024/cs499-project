@@ -1,0 +1,30 @@
+rules:
+- limit: {fail: 1%, note: 0.1%}
+  parameter1: h1__nhv__0
+  parameter2: h1__nhv__0_titan
+  rule: compare
+  rule number: 2a
+  string: {s1: Simulator  checks, s2: Titan}
+- limit: {fail: 1%, note: 0.1%}
+  parameter1: h1__nhv__0
+  parameter2: h1__nhv__0_hspice
+  rule: compare
+  rule number: 2b
+  string: {s1: Simulator  checks, s2: Hspice}
+- limit: {max: 1000, min: 500}
+  parameter1: h1__nhv__0
+  rule: check
+  rule number: 4
+  string: {s1: Verify a metric is within limits, s2: IDSAT}
+- limit: {fail: 1%, note: 0.1%}
+  parameter1: h1__nhv__1
+  parameter2: h1__nhv__1_titan
+  rule: compare
+  rule number: 2a
+  string: {s1: Simulator  checks, s2: Titan}
+- limit: {fail: 1%, note: 0.1%}
+  parameter1: h1__nhv__1
+  parameter2: h1__nhv__1_hspice
+  rule: compare
+  rule number: 2b
+  string: {s1: Simulator  checks, s2: Hspice}

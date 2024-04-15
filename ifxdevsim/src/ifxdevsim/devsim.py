@@ -320,6 +320,10 @@ class DevSim:
         if 'compare' in param_object['mdrc'][rule_number]:
             new_rule['rule'] = 'compare'
             new_rule['rule number'] = rule_number
+            if 'metrics' in param_object:
+                new_rule['metrics'] = param_object['metrics']
+            else:
+                new_rule['metrics'] = None
             new_rule['device simulations'] = []
             new_rule['device simulations'].append(param_object['measure name'])
             new_rule['device simulations'].append(param_object['measure name'] + "_" + param_object['mdrc'][rule_number]['compare']['control']['simulator'])
@@ -333,6 +337,10 @@ class DevSim:
                 new_rule['rule'] = 'check'
                 new_rule['rule number'] = rule_number
                 new_rule['device simulations'] = []
+                if 'metrics' in param_object:
+                    new_rule['metrics'] = param_object['metrics']
+                else:
+                    new_rule['metrics'] = None
                 new_rule['device simulations'].append(param_object['measure name'])
                 new_rule['string'] = param_object['mdrc'][rule_number]['string']
                 new_rule['limit'] = param_object['mdrc'][rule_number]['limit']

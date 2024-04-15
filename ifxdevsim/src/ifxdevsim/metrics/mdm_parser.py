@@ -8,7 +8,7 @@ Created on Tue Jul 11 07:46:19 CDT 2023
 from .metric_funcs import calc_vt, calc_max_gm, calc_id, calc_vtc, calc_vt_sat
 from . import metric_funcs
 import math
-from ifxpymdm import Mdm
+#from ifxpymdm import Mdm
 from ..logger import Logger
 from .metric import Metric
 from types import MethodType
