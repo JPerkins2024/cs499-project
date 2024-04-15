@@ -581,6 +581,7 @@ class MeasuresMixin:
         iiPos = re.search(find,string)
         while iiPos:
             find, replace = (replace, find)
+            print("replaceSpiceFunction called")
             endPos = iiPos + len(replace)
             open = replace.count('(') - close.count(')')
             while open != 0:
