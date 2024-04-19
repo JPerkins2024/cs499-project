@@ -21,6 +21,7 @@ from .utils import set_scale
 import re
 from .RuleExec import MDRC as Exec
 from .reportGeneration import ReportGenerator as RGen
+import random
 
 class DevSim:
     # Update: this actually works now, simply printing
@@ -366,11 +367,11 @@ class DevSim:
         for keys in self.dsi.Data:
             if not self.dsi.Data[keys]:
                 continue
-            self.dsi.Data[keys]['simulations'] = {"top_tt":{"nominal":12.34}}
+            #self.dsi.Data[keys]['simulations'] = {"top_tt":{"nominal":700.0}}
+            self.dsi.Data[keys]['simulations'] = {"top_tt":{"nominal":random.uniform(400, 1100)}}
             param = Parameter(config, self.techdata, self.dsi.Data[keys], keys)
             self.dsi.AddParam(param)
             
-            #print(self.dsi.Data[keys]['mdrc'].keys())
             if 'mdrc' in self.dsi.Data[keys]:
                 for rule in self.dsi.Data[keys]['mdrc']:
                     self.build_dsrf_rule(self.dsi.Data[keys],rule)
@@ -378,6 +379,8 @@ class DevSim:
                         if 'simulator' in self.dsi.Data[keys]['mdrc'][rule]['compare']['control']:
                             new_param = self.dsi.Data[keys].copy()
                             new_param.pop("mdrc")
+
+                            new_param['simulations'] = {"top_tt":{"nominal":random.uniform(400, 1100)}}
                             new_param["control"]["simulator"] = self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
                             new_param["control"]["language"] = self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
                             new_key = keys + "_"  + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
