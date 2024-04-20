@@ -21,6 +21,7 @@ from .utils import set_scale
 import re
 from .RuleExec import MDRC as Exec
 from .reportGeneration import ReportGenerator as RGen
+import random
 
 class DevSim:
     # Update: this actually works now, simply printing
@@ -385,6 +386,7 @@ class DevSim:
         for keys in self.dsi.Data:
             if not self.dsi.Data[keys]:
                 continue
+<<<<<<< HEAD
             # to infineon: the following line is how we tested 
             #   metrics that we could not access within our simulator's limited metrics:
             self.dsi.Data[keys]['simulations'] = {"top_tt":{"nominal":12.34}}
@@ -395,6 +397,13 @@ class DevSim:
 
             # the following is the uniquification process,
             # it works by reading possible rules and determinig whether we need to create a new parameter or not
+=======
+            #self.dsi.Data[keys]['simulations'] = {"top_tt":{"nominal":700.0}}
+            self.dsi.Data[keys]['simulations'] = {"top_tt":{"nominal":random.uniform(400, 1100)}}
+            param = Parameter(config, self.techdata, self.dsi.Data[keys], keys)
+            self.dsi.AddParam(param)
+            
+>>>>>>> ae8b47f76eb63ea1b542745557192c6a4b63134a
             if 'mdrc' in self.dsi.Data[keys]:
                 for rule in self.dsi.Data[keys]['mdrc']:
                     self.build_dsrf_rule(self.dsi.Data[keys],rule)
@@ -402,6 +411,8 @@ class DevSim:
                         if 'simulator' in self.dsi.Data[keys]['mdrc'][rule]['compare']['control']:
                             new_param = self.dsi.Data[keys].copy()
                             new_param.pop("mdrc")
+
+                            new_param['simulations'] = {"top_tt":{"nominal":random.uniform(400, 1100)}}
                             new_param["control"]["simulator"] = self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
                             new_param["control"]["language"] = self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
                             new_key = keys + "_"  + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
