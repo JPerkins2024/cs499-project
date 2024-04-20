@@ -1,0 +1,26 @@
+rules:
+- device simulations: [h1__nhv__0, h1__nhv__0_titan]
+  limit: {fail: 1%, note: 0.1%}
+  rule: compare
+  rule number: 2a
+  string: {s1: Simulator  checks, s2: Titan}
+- device simulations: [h1__nhv__0, h1__nhv__0_hspice]
+  limit: {fail: 1%, note: 0.1%}
+  rule: compare
+  rule number: 2b
+  string: {s1: Simulator  checks, s2: Hspice}
+- device simulations: [h1__nhv__0]
+  limit: {max: 1000, min: 500}
+  rule: check
+  rule number: 4
+  string: {s1: Verify a metric is within limits, s2: IDSAT}
+- device simulations: [h1__nhv__1, h1__nhv__1_titan]
+  limit: {fail: 1%, note: 0.1%}
+  rule: compare
+  rule number: 2a
+  string: {s1: Simulator  checks, s2: Titan}
+- device simulations: [h1__nhv__1, h1__nhv__1_hspice]
+  limit: {fail: 1%, note: 0.1%}
+  rule: compare
+  rule number: 2b
+  string: {s1: Simulator  checks, s2: Hspice}

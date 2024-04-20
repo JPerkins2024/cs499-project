@@ -14,7 +14,7 @@ import ruamel.yaml
 yaml = ruamel.yaml.YAML()
 import socket
 from copy import copy, deepcopy
-from ifxpymea import FlatMea
+#from ifxpymea import FlatMea
 from ..utils import (
     listfiles,
     is_number,

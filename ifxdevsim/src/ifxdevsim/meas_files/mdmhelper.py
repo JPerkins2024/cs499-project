@@ -5,7 +5,7 @@ Created on Wed Jun 21 07:29:42 CDT 2023
 @author: wellsjeremy
 """
 
-from ifxpymdm import Mdm, Sweep
+#from ifxpymdm import Mdm, Sweep
 from ..logger import Logger
 import os
 import re

@@ -18,7 +18,10 @@ from .views.view_funcs import print_valid_views, print_config, get_pdf_outputs
 import subprocess
 from .metrics.mdm_parser import print_valid_routines
 from .utils import set_scale
-
+import re
+from .RuleExec import MDRC as Exec
+from .reportGeneration import ReportGenerator as RGen
+import random
 
 class DevSim:
     # Update: this actually works now, simply printing
@@ -193,6 +196,15 @@ class DevSim:
             logger.warning(
                 "No techfile specified.  Either specify a techfile with -tf or write the path to it in ./.techfile"
             )
+            
+        try:
+            self.dsrf_file = args.input.split(".")[0] + ".dsrf.yml"
+        except:
+            self.dsrf_file = "output.dsrf.yml"
+        try:
+            self.dsr_file = args.input.split(".")[0] + ".dsr.yml"
+        except:
+            self.dsr_file = "output.dsr.yml"
 
         self.techdata = None
         self.dsi_file = args.input
@@ -307,18 +319,116 @@ class DevSim:
                 logger.info(f"Running {command}")
                 subprocess.run(command,shell=True)
             exit()
+        # new container object that contains all rules
+        self.dsrf_rules = {'rules':[]}
 
+    # creates and populates new rules
+    # build_dsrf_rule input:
+    # param_object: (Parameter(s)) related to the rule
+    # rule_number: (str) rule identification within the dsi data
+    def build_dsrf_rule(self,param_object,rule_number):
+        #call in main to test
+        new_rule = {}
+        #case for compare rule
+        if 'compare' in param_object['mdrc'][rule_number]:
+            new_rule['rule'] = 'compare'
+            new_rule['rule number'] = rule_number
+            new_rule['device simulations'] = []
+            if 'metrics' in param_object:
+                new_rule['metrics'] = param_object['metrics']
+            else:
+                new_rule['metrics'] = None
+            new_rule['device simulations'].append(param_object['measure name'])
+            new_rule['device simulations'].append(param_object['measure name'] + "_" + param_object['mdrc'][rule_number]['compare']['control']['simulator'])
+            new_rule['string'] = param_object['mdrc'][rule_number]['string']
+            new_rule['limit'] = param_object['mdrc'][rule_number]['limit']
+            self.dsrf_rules['rules'].append(new_rule)	
+    	
+        #case for limit check rule
+        if 'check' in param_object['mdrc'][rule_number]:
+    	    #only write check instruction if check rule checks for metric simulated by this param object
+    	    if param_object['mdrc'][rule_number]['check']['metrics'] == param_object['metrics']:
+                new_rule['rule'] = 'check'
+                new_rule['rule number'] = rule_number
+                new_rule['device simulations'] = []
+                if 'metrics' in param_object:
+                    new_rule['metrics'] = param_object['metrics']
+                else:
+                    new_rule['metrics'] = None
+                new_rule['device simulations'].append(param_object['measure name'])
+                new_rule['string'] = param_object['mdrc'][rule_number]['string']
+                new_rule['limit'] = param_object['mdrc'][rule_number]['limit']
+                self.dsrf_rules['rules'].append(new_rule)
+
+        #case for limit check rule
+        if 'corner_compare' in param_object['mdrc'][rule_number]:
+    	    #only write check instruction if check rule checks for metric simulated by this param object
+    	    if param_object['mdrc'][rule_number]['corner_compare']['metrics'] == param_object['metrics']:
+                new_rule['rule'] = 'corner_compare'
+                new_rule['rule number'] = rule_number
+                new_rule['device simulations'] = []
+                if 'metrics' in param_object:
+                    new_rule['metrics'] = param_object['metrics']
+                else:
+                    new_rule['metrics'] = None
+                new_rule['device simulations'].append(param_object['measure name'])
+                new_rule['string'] = param_object['mdrc'][rule_number]['string']
+                new_rule['limit'] = param_object['mdrc'][rule_number]['limit']
+                self.dsrf_rules['rules'].append(new_rule)
 
     def main(self):
         jobs = []
         logger = Logger(printSummary=False, logLevel="INFO")
+        # create a repport generator object
+        report = RGen()
+
+        report.AddStage("DSI Parameterization")
         for keys in self.dsi.Data:
             if not self.dsi.Data[keys]:
                 continue
+<<<<<<< HEAD
+            # to infineon: the following line is how we tested 
+            #   metrics that we could not access within our simulator's limited metrics:
+            self.dsi.Data[keys]['simulations'] = {"top_tt":{"nominal":12.34}}
+
+            # you should not need the previous lines within your complete simulator
             param = Parameter(config, self.techdata, self.dsi.Data[keys], keys)
             self.dsi.AddParam(param)
-            bucket_idx = None
 
+            # the following is the uniquification process,
+            # it works by reading possible rules and determinig whether we need to create a new parameter or not
+=======
+            #self.dsi.Data[keys]['simulations'] = {"top_tt":{"nominal":700.0}}
+            self.dsi.Data[keys]['simulations'] = {"top_tt":{"nominal":random.uniform(400, 1100)}}
+            param = Parameter(config, self.techdata, self.dsi.Data[keys], keys)
+            self.dsi.AddParam(param)
+            
+>>>>>>> ae8b47f76eb63ea1b542745557192c6a4b63134a
+            if 'mdrc' in self.dsi.Data[keys]:
+                for rule in self.dsi.Data[keys]['mdrc']:
+                    self.build_dsrf_rule(self.dsi.Data[keys],rule)
+                    if 'compare' in self.dsi.Data[keys]['mdrc'][rule]:
+                        if 'simulator' in self.dsi.Data[keys]['mdrc'][rule]['compare']['control']:
+                            new_param = self.dsi.Data[keys].copy()
+                            new_param.pop("mdrc")
+
+                            new_param['simulations'] = {"top_tt":{"nominal":random.uniform(400, 1100)}}
+                            new_param["control"]["simulator"] = self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
+                            new_param["control"]["language"] = self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
+                            new_key = keys + "_"  + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
+                            #new_key = keys.split("__")[0] + "_" + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator'] + "__"  + keys.split("__")[1]
+                            new_param["measure name"] = new_param["measure name"] + "_" + self.dsi.Data[keys]['mdrc'][rule]['compare']['control']['simulator']
+             
+                            #creation of a parameter issues, should not create errors in the complete simulator
+                            try:
+                                self.dsi.AddParam(Parameter(config,self.techdata,new_param,new_key))
+                            except Exception as e:
+                                logger.fatal(f"Parameter Creation ERROR (MDRC) {e}\n Key value:{new_key}, \n Param: {new_param}")
+                                continue
+            
+            
+            bucket_idx = None
+        
             for i, bucket in enumerate(jobs):
                 if not bucket.control == param.param_data["control"]:
                     continue
@@ -330,7 +440,33 @@ class DevSim:
             if bucket_idx is not None:
                 jobs[bucket_idx].add_param(param)
             else:
-                jobs.append(Controller(param))
+                pass
+                #jobs.append(Controller(param))
+
+
+        report.AddStage("MDRC Generator")
+
+        # chose whether we need to run a preset of rule file or 
+        # create a new rule file
+        
+        overwrite_dsrf = True
+
+        if not overwrite_dsrf:
+            try:
+                with open(self.dsrf_file,"r") as f:
+                    self.dsrf_rules = yaml.load(f)
+                    #yaml.dump(self.dsrf_rules,f)
+            except Exception as e:
+                logger.error(f"dsrf file '{self.dsr_file}' does not exist")
+                logger.warning(f"creating a new dsrf file")
+                overwrite_dsrf = True
+        if overwrite_dsrf:   
+            if self.dsrf_rules['rules'] != []:
+                with open(self.dsrf_file,"w") as f:
+                    yaml.dump(self.dsrf_rules,f)
+                    
+
+        report.AddStage("Simulation Enviorment")
 
         jobids = []
         graphonly = None
@@ -350,19 +486,78 @@ class DevSim:
         for job in jobs:
             job.parse()
 
+
+        report.AddStage("MDRC Execution")
+
+
+        #Create a map to execute rules faster
+        # we recommend infineon change from a parameter list to a dictionary, 
+        #  easier to search and uniquify
+        ParamMap = {}
+        for idx in range(len(self.dsi.Params)):
+            p = self.dsi.Params[idx]
+            for x in p:
+                ParamMap[x.measure_name] = x
+        
+        
+        
+        # create Execute object and start executing rules
+        executor = Exec()
+
+        for Crule in (self.dsrf_rules["rules"]):
+            Param_device = Crule["device simulations"]
+            RuleOut = None
+            logger.info(f"Runing {Crule['rule']} for {Param_device[0]} ({Crule['rule number']})")
+
+            #verify that the mdrc section is correctly placed in the original device
+            if ("MDRC_Execution" not in ParamMap[Param_device[0]].param_data["mdrc"][Crule["rule number"]].keys()):
+                ParamMap[Param_device[0]].param_data["mdrc"][Crule["rule number"]]["MDRC_Execution"] = []
+
+            #choose and execute the rule
+            if (Crule['rule'] == "compare"):
+                RuleOut = executor.EX_Compare(ruleID=Crule["rule number"], ruleMetric=Crule["metrics"], dvSim=[ParamMap[Param_device[0]],ParamMap[Param_device[1]]], dictLimit=Crule["limit"])
+            elif (Crule['rule'] == "check"):
+                    RuleOut = executor.EX_Check(ruleID=Crule['rule number'], ruleMetric=Crule["metrics"], dvSim=[ParamMap[Param_device[0]]], dictLimit=Crule['limit'])
+            elif (Crule['rule'] == "corner_compare"):
+                if (len(Param_device) == 2):
+                    RuleOut = executor.EX_Corner_Compare(ruleID=Crule['rule number'], dvSim=[ParamMap[Param_device[0]],ParamMap[Param_device[1]]], dictLimit=Crule['limit'],ruleMetric=Crule["metrics"])
+                elif (len(Param_device) == 1):
+                    RuleOut = executor.EX_Corner_Compare(ruleID=Crule['rule number'], dvSim=[ParamMap[Param_device[0]]], dictLimit=Crule['limit'],ruleMetric=Crule["metrics"])
+                else:
+                   RuleOut = {"ID":Crule['rule number'],"ERROR":f"Error at [{Crule['rule number']}], with rule action [{ str(Crule['rule'])}],  number of parameters not suported ({len(Param_device)})"}   
+            else: 
+                RuleOut = {"ID":Crule['rule number'],"ERROR":f"Error at [{Crule['rule number']}], with rule action [{ str(Crule['rule'])}] , device [{ Param_device[0] }]"}   
+            
+            # this stage is a catch rule error execution rule, should not trigger. 
+            # (RuleExec.py file corruption or rule typo)
+            if RuleOut == None:
+                RuleOut = {"ID":Crule['rule number'],"ERROR":f"Error at [{ str(Crule['rule number']) }] , with device [{ Param_device[0] }]"}
+           
+            # print out an error if the rule is invalid
+            if( 'ERROR' in RuleOut.keys()):
+                logger.error(f"Error in rule {RuleOut['ID']} produced:'{RuleOut['ERROR']}'")   
+            
+            ParamMap[Param_device[0]].param_data["mdrc"][Crule["rule number"]]["MDRC_Execution"].append(RuleOut)
+            report.AddRule(device=ParamMap[Param_device[0]].device,rule=RuleOut.copy())
+        
+        report.AddStage("DSO Output File Generation")
         self.dsi.print()
         self.dsi.create_views()
+
+        #print out dso file
         if self.pdfout:
             pdf_files = get_pdf_outputs()
             command = f"pdfunite {' '.join(pdf_files)} {self.pdfout}"
             logger.info(f"Combining all generated pdfs into {self.pdfout}")
             logger.info(f"Running {command}")
             subprocess.run(command,shell=True)
+            
+        #add last stage onto the report stage and print out report as "dsr"
+        report.AddStage("MDRC Report Generation")
+        report.printReport(self.dsr_file)
+        
 
-    # For future modules, the args.<whatever> is just the
-    # full name of the <whatever> argument.
-
-
+        
 if __name__ == "__main__":
     dev = DevSim()
     dev.main()

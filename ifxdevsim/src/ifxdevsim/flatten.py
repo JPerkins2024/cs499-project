@@ -1,4 +1,5 @@
-from collections import Iterable
+#from collections import Iterable
+from collections.abc import Iterable
 
 
 def flatten(coll):

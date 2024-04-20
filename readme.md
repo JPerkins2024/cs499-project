@@ -160,4 +160,3 @@ getDevicesUsed -> outputs a list of the used devices
 
 ### printReport
 This function outputs information to a yaml file format relevant to the execution that occurred during runtime. This function can take an optional parameter “title”, which you can use to specify the name of the saved report, if this parameter is left blank, the default name will be “"mdrc.report.yaml"”
-
